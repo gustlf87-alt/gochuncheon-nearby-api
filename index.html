@@ -2139,6 +2139,63 @@ body{
   }
 }
 
+
+/* v-chatbot-tab-expand */
+#modal-box.modal-chatbot-mode{
+  display:flex;
+  flex-direction:column;
+}
+#modal-box.modal-chatbot-mode .modal-img-wrap{
+  display:none !important;
+}
+#modal-box.modal-chatbot-mode .modal-body{
+  display:flex;
+  flex-direction:column;
+  flex:1 1 auto;
+  min-height:0;
+  padding:0;
+}
+#modal-box.modal-chatbot-mode .modal-tabs{
+  margin:0;
+  padding:12px 12px 0;
+  background:var(--cream);
+  position:sticky;
+  top:0;
+  z-index:3;
+}
+#modal-box.modal-chatbot-mode #modal-panel-chatbot{
+  display:flex !important;
+  flex:1 1 auto;
+  min-height:0;
+}
+#modal-box.modal-chatbot-mode #modal-panel-chatbot .inline-chat-wrap{
+  flex:1 1 auto;
+  height:auto;
+  min-height:0;
+  border-left:none;
+  border-right:none;
+  border-bottom:none;
+}
+@media (min-width: 701px){
+  #modal-box.modal-chatbot-mode{
+    max-height:90vh;
+  }
+  #modal-box.modal-chatbot-mode #modal-panel-chatbot .inline-chat-wrap{
+    min-height:58vh;
+  }
+}
+@media (max-width:700px){
+  #modal-box.modal-chatbot-mode{
+    max-height:95vh;
+  }
+  #modal-box.modal-chatbot-mode .modal-tabs{
+    padding:10px 10px 0;
+  }
+  #modal-box.modal-chatbot-mode #modal-panel-chatbot .inline-chat-wrap{
+    min-height:60vh;
+  }
+}
+
 </style>
 </head>
 <body class="scanlines">
@@ -6760,6 +6817,106 @@ function playSound(type){
   document.addEventListener('DOMContentLoaded', function(){
     var isMapVisible = !document.getElementById('screen-map')?.classList.contains('hidden');
     setMapInteractionEnabled(!!isMapVisible);
+  });
+})();
+</script>
+
+
+<script>
+/* v-chatbot-tab-expand */
+(function(){
+  function syncChatbotModalLayout(tabName){
+    var modalBox = document.getElementById('modal-box');
+    if(!modalBox) return;
+    modalBox.classList.toggle('modal-chatbot-mode', tabName === 'chatbot');
+  }
+
+  var _origSwitchModalTab = window.switchModalTab;
+  if (typeof _origSwitchModalTab === 'function') {
+    window.switchModalTab = async function(tabName){
+      syncChatbotModalLayout(tabName);
+      return await _origSwitchModalTab.apply(this, arguments);
+    };
+  }
+
+  var _origCloseModal = window.closeModal;
+  if (typeof _origCloseModal === 'function') {
+    window.closeModal = function(){
+      var modalBox = document.getElementById('modal-box');
+      if(modalBox) modalBox.classList.remove('modal-chatbot-mode');
+      return _origCloseModal.apply(this, arguments);
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    syncChatbotModalLayout('info');
+  });
+})();
+</script>
+
+
+<script>
+/* v-chatbot-tab-keep-mode-on-focus */
+(function(){
+  function forceChatbotModeFromActiveTab(){
+    var modalBox = document.getElementById('modal-box');
+    if(!modalBox) return;
+    var activeTab =
+      document.querySelector('.modal-tab-btn.active[data-tab]') ||
+      document.querySelector('.modal-tabs .active[data-tab]') ||
+      document.querySelector('.tab-btn.active[data-tab]');
+    var isChatbot = activeTab && activeTab.getAttribute('data-tab') === 'chatbot';
+    modalBox.classList.toggle('modal-chatbot-mode', !!isChatbot);
+  }
+
+  document.addEventListener('click', function(e){
+    var chatbotTab = e.target.closest('[data-tab="chatbot"]');
+    if(chatbotTab){
+      setTimeout(forceChatbotModeFromActiveTab, 0);
+    }
+  }, true);
+
+  document.addEventListener('focusin', function(e){
+    var el = e.target;
+    if(!el) return;
+    var isChatInput =
+      el.matches('#inline-chat-input, .inline-chat-input, .chat-input, textarea, input') &&
+      !!el.closest('#modal-panel-chatbot, .inline-chat-wrap, .inline-chat');
+    if(isChatInput){
+      var modalBox = document.getElementById('modal-box');
+      if(modalBox) modalBox.classList.add('modal-chatbot-mode');
+    }
+  });
+
+  document.addEventListener('input', function(e){
+    var el = e.target;
+    if(!el) return;
+    if(el.closest && el.closest('#modal-panel-chatbot, .inline-chat-wrap, .inline-chat')){
+      var modalBox = document.getElementById('modal-box');
+      if(modalBox) modalBox.classList.add('modal-chatbot-mode');
+    }
+  });
+
+  var _origSwitchModalTab2 = window.switchModalTab;
+  if (typeof _origSwitchModalTab2 === 'function' && !_origSwitchModalTab2.__chatbotKeepPatched) {
+    var wrapped = async function(tabName){
+      var result = await _origSwitchModalTab2.apply(this, arguments);
+      var modalBox = document.getElementById('modal-box');
+      if(modalBox) modalBox.classList.toggle('modal-chatbot-mode', tabName === 'chatbot');
+      return result;
+    };
+    wrapped.__chatbotKeepPatched = true;
+    window.switchModalTab = wrapped;
+  }
+
+  // safety observer: if any script re-renders tab/input area, keep chatbot mode
+  var observer = new MutationObserver(function(){
+    forceChatbotModeFromActiveTab();
+  });
+  document.addEventListener('DOMContentLoaded', function(){
+    var modalBox = document.getElementById('modal-box');
+    if(modalBox) observer.observe(modalBox, {childList:true, subtree:true, attributes:true, attributeFilter:['class']});
+    forceChatbotModeFromActiveTab();
   });
 })();
 </script>
