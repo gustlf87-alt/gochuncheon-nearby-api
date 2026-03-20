@@ -147,7 +147,7 @@ button,a,input{font-family:inherit}
 .nearby-note{font-size:12px;line-height:1.65;color:#384252;font-family:var(--ko)}
 .modal-empty{border:2px dashed #c8b27f;background:#fffaf0;padding:16px 14px;font-size:12px;line-height:1.7;color:#6d5b37;font-family:var(--ko)}
 .modal-stamp{position:absolute;top:54px;right:12px;font-size:78px;opacity:0;transform:rotate(-15deg) scale(0);transition:all .4s cubic-bezier(.34,1.6,.64,1)}
-.modal-stamp.show{opacity:1;transform:rotate(-12deg) scale(1)}
+.modal-stamp.show{opacity:1;transform:rotate(-12deg) scale(1); z-index:1000;}
 canvas.pixel-sprite{image-rendering:pixelated;display:block;background:transparent}
 .char-sprite-wrap canvas.pixel-sprite{width:80px;height:112px}
 #title-preview canvas.pixel-sprite{width:44px;height:62px}
