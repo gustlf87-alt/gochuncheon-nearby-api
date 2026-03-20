@@ -1,83 +1,116 @@
-import cors from "cors";
+module.exports = async function handler(req, res) {
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-const app = express();
-app.use(cors());
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-const PORT = process.env.PORT || 3000;
-const KAKAO_REST_KEY = process.env.KAKAO_REST_KEY;
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      ok: false,
+      error: "Method Not Allowed"
+    });
+  }
 
-if (!KAKAO_REST_KEY) {
-  console.warn("KAKAO_REST_KEY is missing. Set it before running the server.");
-}
+  const KAKAO_REST_KEY = process.env.KAKAO_REST_KEY;
 
-async function kakaoFetch(url) {
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `KakaoAK ${KAKAO_REST_KEY}`
+  if (!KAKAO_REST_KEY) {
+    return res.status(500).json({
+      ok: false,
+      error: "KAKAO_REST_KEY is not configured."
+    });
+  }
+
+  async function kakaoFetch(url) {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `KakaoAK ${KAKAO_REST_KEY}`
+      }
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Kakao API ${response.status}: ${text}`);
     }
-  });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Kakao API ${res.status}: ${text}`);
+    return response.json();
   }
 
-  return res.json();
-}
-
-async function resolveCoords({ lat, lng, address, title }) {
-  if (lat && lng) {
-    return { lat: Number(lat), lng: Number(lng), source: "provided_coords" };
-  }
-
-  if (address) {
-    const addrUrl = new URL("https://dapi.kakao.com/v2/local/search/address.json");
-    addrUrl.searchParams.set("query", address);
-    const addrData = await kakaoFetch(addrUrl);
-    const first = addrData.documents?.[0];
-    if (first?.y && first?.x) {
-      return { lat: Number(first.y), lng: Number(first.x), source: "address_geocode" };
+  async function resolveCoords({ lat, lng, address, title }) {
+    if (lat && lng) {
+      return {
+        lat: Number(lat),
+        lng: Number(lng),
+        source: "provided_coords"
+      };
     }
-  }
 
-  if (title) {
-    const keywordUrl = new URL("https://dapi.kakao.com/v2/local/search/keyword.json");
-    keywordUrl.searchParams.set("query", `춘천 ${title}`);
-    keywordUrl.searchParams.set("size", "5");
-    const keywordData = await kakaoFetch(keywordUrl);
-    const first = keywordData.documents?.[0];
-    if (first?.y && first?.x) {
-      return { lat: Number(first.y), lng: Number(first.x), source: "keyword_search" };
+    if (address) {
+      const addrUrl = new URL("https://dapi.kakao.com/v2/local/search/address.json");
+      addrUrl.searchParams.set("query", address);
+
+      const addrData = await kakaoFetch(addrUrl);
+      const first = addrData.documents?.[0];
+
+      if (first?.y && first?.x) {
+        return {
+          lat: Number(first.y),
+          lng: Number(first.x),
+          source: "address_geocode"
+        };
+      }
     }
+
+    if (title) {
+      const keywordUrl = new URL("https://dapi.kakao.com/v2/local/search/keyword.json");
+      keywordUrl.searchParams.set("query", `춘천 ${title}`);
+      keywordUrl.searchParams.set("size", "5");
+
+      const keywordData = await kakaoFetch(keywordUrl);
+      const first = keywordData.documents?.[0];
+
+      if (first?.y && first?.x) {
+        return {
+          lat: Number(first.y),
+          lng: Number(first.x),
+          source: "keyword_search"
+        };
+      }
+    }
+
+    throw new Error("Could not resolve coordinates for this location.");
   }
 
-  throw new Error("Could not resolve coordinates for this location.");
-}
+  function mapNearbyItem(place, type) {
+    return {
+      name: place.place_name,
+      signature_menu: type === "cafe" ? "카페" : "식당",
+      distance_km: place.distance ? Number(place.distance) / 1000 : null,
+      note: place.category_name || "",
+      map_query: place.place_name,
+      address: place.road_address_name || place.address_name || "",
+      public_transport: "",
+      parking: false,
+      pet_allowed: false,
+      phone: place.phone || "",
+      place_url: place.place_url || "",
+      category_name: place.category_name || ""
+    };
+  }
 
-function mapNearbyItem(place, type) {
-  return {
-    name: place.place_name,
-    signature_menu: type === "cafe" ? "카페" : "식당",
-    distance_km: place.distance ? Number(place.distance) / 1000 : null,
-    note: place.category_name || "",
-    map_query: place.place_name,
-    address: place.road_address_name || place.address_name || "",
-    public_transport: "",
-    parking: false,
-    pet_allowed: false,
-    phone: place.phone || "",
-    place_url: place.place_url || "",
-    category_name: place.category_name || ""
-  };
-}
-
-app.get("/api/nearby", async (req, res) => {
   try {
-    const { lat, lng, address = "", title = "", type = "cafe", radius = "2000", size = "10" } = req.query;
-
-    if (!KAKAO_REST_KEY) {
-      return res.status(500).json({ error: "KAKAO_REST_KEY is not configured." });
-    }
+    const {
+      lat,
+      lng,
+      address = "",
+      title = "",
+      type = "cafe",
+      radius = "2000",
+      size = "10"
+    } = req.query;
 
     const coords = await resolveCoords({ lat, lng, address, title });
     const categoryGroupCode = type === "food" ? "FD6" : "CE7";
@@ -93,7 +126,7 @@ app.get("/api/nearby", async (req, res) => {
     const data = await kakaoFetch(url);
     const items = (data.documents || []).map((place) => mapNearbyItem(place, type));
 
-    res.json({
+    return res.status(200).json({
       ok: true,
       source: "kakao_local",
       type,
@@ -103,18 +136,11 @@ app.get("/api/nearby", async (req, res) => {
       items
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
+    console.error("nearby.js error:", error);
+
+    return res.status(500).json({
       ok: false,
       error: error.message || "Nearby lookup failed."
     });
   }
-});
-
-app.get("/", (req, res) => {
-  res.send("GoChuncheon nearby API server is running.");
-});
-
-app.listen(PORT, () => {
-  console.log(`GoChuncheon nearby API server running on http://localhost:${PORT}`);
-});
+};
