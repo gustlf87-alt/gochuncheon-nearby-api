@@ -5,7 +5,7 @@ const client = new OpenAI({
 });
 
 module.exports = async function handler(req, res) {
-  // CORS 허용
+  // ✅ CORS (외부 도메인 허용)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -16,41 +16,69 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method !== "POST") {
-    return res.status(405).json({ answer: "Method Not Allowed" });
+    return res.status(405).json({
+      answer: "잘못된 요청이에요 🙏"
+    });
   }
 
   try {
-    const { question = "", place = {}, history = [], systemPrompt = "" } = req.body || {};
+    const { question = "", place = {}, systemPrompt = "" } = req.body || {};
 
+    // ✅ 키 체크
     if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({
-        answer: "OPENAI_API_KEY가 설정되지 않았어요."
+        answer: "AI 설정이 아직 준비되지 않았어요 😢"
       });
     }
 
+    // ✅ 프롬프트 (아이용 톤 강화)
     const prompt = `
-너는 유초등 대상 관광 해설 AI야.
-한국어로 쉽고 짧고 친절하게 설명해.
+너는 어린이를 위한 관광 해설 AI야.
+말투는 친절하고 재미있게, 초등학생도 이해할 수 있게 설명해.
+
+조건:
+- 너무 길지 않게 (2~4문장)
+- 어려운 단어 쓰지 않기
+- 친근한 말투 사용
 
 장소명: ${place?.name || ""}
 설명: ${place?.description || ""}
 추가 지시: ${systemPrompt || ""}
 
 질문: ${question}
-    `;
+    `.trim();
 
-    const response = await client.responses.create({
-      model: "gpt-5.4",
-      input: prompt
-    });
+    // ✅ 타임아웃 (12초)
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("OPENAI_TIMEOUT")), 12000)
+    );
+
+    const response = await Promise.race([
+      client.responses.create({
+        model: "gpt-5.4",
+        input: prompt
+      }),
+      timeoutPromise
+    ]);
 
     return res.status(200).json({
-      answer: response.output_text || "답변을 불러오지 못했어요."
+      answer:
+        response.output_text ||
+        "음... 다시 한 번 물어봐 줄래? 😊"
     });
+
   } catch (error) {
     console.error("chat.js error:", error);
-    return res.status(500).json({
-      answer: error?.message || "AI 연결 오류"
+
+    // ✅ fallback (항상 응답 보장)
+    let fallback = "지금은 AI가 잠깐 쉬고 있어요 😢 조금만 있다가 다시 물어봐 주세요!";
+
+    if (error.message === "OPENAI_TIMEOUT") {
+      fallback = "조금 느려요 😭 다시 한 번만 물어봐 주세요!";
+    }
+
+    return res.status(200).json({
+      answer: fallback
     });
   }
 };
