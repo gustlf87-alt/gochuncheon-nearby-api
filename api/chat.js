@@ -5,12 +5,10 @@ const client = new OpenAI({
 });
 
 module.exports = async function handler(req, res) {
-  // ✅ CORS (외부 도메인 허용)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // preflight 대응
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -24,14 +22,12 @@ module.exports = async function handler(req, res) {
   try {
     const { question = "", place = {}, systemPrompt = "" } = req.body || {};
 
-    // ✅ 키 체크
     if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({
         answer: "AI 설정이 아직 준비되지 않았어요 😢"
       });
     }
 
-    // ✅ 프롬프트 (아이용 톤 강화)
     const prompt = `
 너는 어린이를 위한 관광 해설 AI야.
 말투는 친절하고 재미있게, 초등학생도 이해할 수 있게 설명해.
@@ -48,7 +44,6 @@ module.exports = async function handler(req, res) {
 질문: ${question}
     `.trim();
 
-    // ✅ 타임아웃 (12초)
     const timeoutPromise = new Promise((_, reject) =>
       setTimeout(() => reject(new Error("OPENAI_TIMEOUT")), 12000)
     );
@@ -62,15 +57,12 @@ module.exports = async function handler(req, res) {
     ]);
 
     return res.status(200).json({
-      answer:
-        response.output_text ||
-        "음... 다시 한 번 물어봐 줄래? 😊"
+      answer: response.output_text || "음... 다시 한 번 물어봐 줄래? 😊"
     });
 
   } catch (error) {
     console.error("chat.js error:", error);
 
-    // ✅ fallback (항상 응답 보장)
     let fallback = "지금은 AI가 잠깐 쉬고 있어요 😢 조금만 있다가 다시 물어봐 주세요!";
 
     if (error.message === "OPENAI_TIMEOUT") {
