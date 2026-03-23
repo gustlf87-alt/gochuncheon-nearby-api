@@ -2703,6 +2703,7 @@ body{
   color:#fff6dd;
   font-family:var(--ko);
   cursor:pointer;
+  width:25%;
 }
 .game-nav-btn:active{
   transform:translateY(2px);
@@ -2768,6 +2769,7 @@ body{
     min-height:66px;
     border-radius:16px;
     padding:8px 4px 7px;
+	width:25%;
   }
   .game-nav-icon{font-size:20px}
   .game-nav-label{
@@ -2967,6 +2969,35 @@ body{
   }
   .learning-mission-step-text{
     font-size:11px;
+  }
+}
+</style>
+
+
+<style>
+/* v21 PC center only fix */
+.game-bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  width:100%;
+  height:70px;
+  display:flex;
+  background:#1a1a2e;
+  z-index:9999;
+}
+
+/* 버튼 4등분 유지 */
+.game-bottom-nav button{
+  width:25%;
+}
+
+/* 👉 PC에서만 가운데 정렬 */
+@media (min-width:768px){
+  .game-bottom-nav{
+    max-width:520px;
+    margin:0 auto;
   }
 }
 </style>
