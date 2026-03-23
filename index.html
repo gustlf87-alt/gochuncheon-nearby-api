@@ -70,54 +70,23 @@ window.safeRemoveItem = function(key){
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root{
-  /* base */
   --cream:#f5efe0;
   --paper:#ede0c4;
-
-  /* point */
   --gold:#e8a922;
   --gold-dk:#b07c10;
-
-  /* main action */
-  --teal:#3fa7a0;
-  --teal-dk:#2c7c76;
-
-  /* light accent */
+  --teal:#2a7f6f;
+  --teal-dk:#1a5c4f;
   --sky:#7bcfdf;
   --sky-dk:#4aa8bc;
-
-  /* alert / close */
   --cherry:#c83b3b;
   --cherry-dk:#8f2020;
-
-  /* frame / dark bg */
   --night:#1a1a2e;
-  --night2:#22334d;
-
-  /* extra accent */
-  --aiai:#5b63d6;
-
-  /* learning / panel sub tones */
-  --navy-soft:#2f3e57;
-  --navy-soft-dk:#243246;
-  --mint-soft:#eaf5f2;
-  --mint-line:#b7d9d1;
-  --gold-soft:#fff4cf;
-  --gold-line:#d8b35a;
-  --paper-soft:#f8f3e7;
-  --line-soft:rgba(26,26,46,.14);
-
-  /* text */
-  --text-main:#1f2432;
-  --text-sub:#4b5563;
-  --text-soft:#6b7280;
-
-  /* ui */
-  --border:2px solid #1a1a2e;
-  --shadow:2px 2px 0 #1a1a2e;
-
+  --night2:#16213e;
   --pixel:'Press Start 2P','Mona12',monospace;
   --ko:'Mona12','Press Start 2P',monospace;
+  --border:2px solid #1a1a2e;
+  --shadow:2px 2px 0 #1a1a2e;
+  --aiai:#4343cb;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;background:var(--night);font-family:var(--pixel);image-rendering:pixelated;color:var(--cream)}
@@ -1179,7 +1148,7 @@ body{
 .learning-hero-card{
   padding:14px;
   margin-bottom:16px;
-  background:var(--night);
+  background:linear-gradient(180deg,#13243f 0%,#1b3152 100%);
   color:#f7f0de;
 }
 .learning-hero-card::before{
@@ -1279,7 +1248,7 @@ body{
   background: rgba(0, 0, 0, 0.04);
   border-radius: 4px;
 
-  letter-spacing: -0.8px;
+  letter-spacing: -0.2px;
 }
 .learning-list{
   list-style:none;
@@ -1336,7 +1305,7 @@ body{
   width:100%;
   height:100%;
   padding:20px;
-  background:var(--night);
+  background:linear-gradient(180deg,#243a61 0%,#1a2740 100%);
   border-color:#111827;
 }
 .learning-right .learning-quiz::before{
@@ -2507,28 +2476,83 @@ body{
   border-color:rgba(42,127,111,.34) !important;
 }
 
-@media (max-width: 700px){
-  .modal-tabs{
-    display:flex;
-    gap:6px;
-    width:100%;
-  }
 
-  .modal-tab{
-    flex:1 1 0;
-    min-width:0;
-    text-align:center;
-    padding:10px 4px;
-    font-size:11px;
-    white-space:nowrap;
+.title-mission-board{margin:0 auto 22px;max-width:520px;background:rgba(245,239,224,.08);border:2px solid rgba(232,169,34,.38);box-shadow:3px 3px 0 rgba(0,0,0,.22);padding:12px 14px;color:var(--cream);font-family:var(--ko)}
+.title-mission-kicker{display:inline-block;margin-bottom:6px;background:var(--gold);color:var(--night);border:2px solid var(--gold-dk);padding:3px 8px;font-size:11px}
+.title-mission-text{font-size:13px;line-height:1.7;color:#f8f3e7}
+.title-mission-text strong{color:#ffe28a}
+.explore-goal-card{position:absolute;left:12px;bottom:10px;z-index:41;max-width:220px;background:rgba(26,26,46,.88);border:2px solid rgba(232,169,34,.42);box-shadow:3px 3px 0 rgba(0,0,0,.24);padding:9px 10px;color:var(--cream);font-family:var(--ko)}
+.explore-goal-kicker{font-size:9px;color:#8ae5d3;margin-bottom:4px}
+.explore-goal-title{font-size:12px;color:#ffe08a;margin-bottom:4px;font-weight:700}
+.explore-goal-copy{font-size:11px;line-height:1.5;color:#eef5ff}
+.explore-goal-mini{margin-top:6px;font-size:10px;color:#c9f7ed}
+.learning-mission-box{background:linear-gradient(180deg,#fff4cf 0%,#fff9ea 100%);border:3px solid #1a1a2e;border-radius:18px;box-shadow:6px 6px 0 rgba(26,26,46,.16);padding:16px 18px;color:#4d3200}
+.learning-mission-kicker{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:999px;background:#1a1a2e;color:#ffe8a3;font:700 10px/1 var(--pixel);margin-bottom:8px}
+.learning-mission-title{font:700 14px/1.5 var(--ko);color:#5a3a08;margin-bottom:4px}
+.learning-mission-copy{font:500 12px/1.65 var(--ko);color:#6c4c16}
+.learning-mission-status{display:inline-flex;align-items:center;margin-top:10px;padding:4px 9px;border-radius:999px;border:2px solid rgba(26,26,46,.14);background:rgba(255,255,255,.55);font:700 11px/1 var(--ko);color:#6b531f}
+.learning-mission-status.done{background:#edf7f3;color:#155a4a;border-color:rgba(21,90,74,.2)}
+@media (max-width:700px){.title-mission-board{max-width:320px;padding:10px 11px;margin-bottom:18px}.title-mission-text{font-size:12px;line-height:1.6}.explore-goal-card{left:6px;bottom:74px;max-width:168px;padding:7px 8px}.explore-goal-title{font-size:11px}.explore-goal-copy{font-size:10px}.explore-goal-mini{font-size:9px}.learning-mission-box{padding:14px;border-radius:16px;box-shadow:4px 4px 0 rgba(26,26,46,.14)}.learning-mission-title{font-size:12px}.learning-mission-copy,.learning-mission-status{font-size:11px}}
+
+</style>
+
+
+<style>
+/* mobile mini goal hud */
+.mobile-goal-hud{display:none}
+@media (max-width:700px){
+  .explore-goal-card{display:none !important}
+  .mobile-goal-hud{
+    display:none;
+    align-items:center;
+    gap:8px;
+    position:fixed;
+    top:calc(10px + env(safe-area-inset-top));
+    left:max(10px, env(safe-area-inset-left));
+    right:62px;
+    z-index:100245;
+    min-height:40px;
+    padding:7px 10px;
+    background:rgba(26,26,46,.92);
+    border:2px solid rgba(232,169,34,.38);
+    box-shadow:2px 2px 0 rgba(0,0,0,.22);
+    color:var(--cream);
+    pointer-events:none;
+  }
+  .mobile-goal-hud-icon{
+    width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+    background:var(--gold);color:var(--night);border:2px solid var(--gold-dk);
+    font-size:11px;line-height:1;box-shadow:1px 1px 0 rgba(0,0,0,.18);
+    flex:0 0 auto;
+  }
+  .mobile-goal-hud-body{min-width:0;flex:1 1 auto}
+  .mobile-goal-hud-title{
+    font-size:10px;line-height:1.15;color:#ffd978;font-family:var(--ko);margin-bottom:2px
+  }
+  .mobile-goal-hud-text{
+    font-size:11px;line-height:1.3;color:#f5efe0;font-family:var(--ko);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
 }
-
+@media (max-width:420px){
+  .mobile-goal-hud{left:max(8px, env(safe-area-inset-left));right:58px;min-height:38px;padding:6px 8px}
+  .mobile-goal-hud-title{font-size:9px}
+  .mobile-goal-hud-text{font-size:10px}
+}
 </style>
 
 </head>
 <body class="scanlines">
 
+
+
+<div class="mobile-goal-hud" id="mobile-goal-hud" aria-hidden="true">
+  <div class="mobile-goal-hud-icon">🎯</div>
+  <div class="mobile-goal-hud-body">
+    <div class="mobile-goal-hud-title">오늘의 탐험 목표</div>
+    <div class="mobile-goal-hud-text" id="mobile-goal-hud-text">3곳 둘러보고 퀴즈나 미션을 해보세요.</div>
+  </div>
+</div>
 
 <button id="floating-game-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="메뉴 열기">☰</button>
 <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" onclick="toggleMobileMenu(false)"></div>
@@ -2576,6 +2600,10 @@ body{
 <strong>강원도 여행을 게임처럼 배우는<br/>교육형 관광 서비스</strong>
 </div>
 <div class="title-sub">픽셀 지도로 떠나는 춘천 여행 ✦ <br/>건물 아이콘을 눌러 관광지를 탐험해보세요.</div>
+    <div class="title-mission-board">
+      <div class="title-mission-kicker">🎯 탐험 준비 완료</div>
+      <div class="title-mission-text">춘천에 가기 전에 관광지 이야기를 미리 보고,<br/>퀴즈와 미션으로 <strong>3곳 이상</strong> 먼저 탐험해보세요!</div>
+    </div>
     <div class="title-character-preview" id="title-preview"></div>
     <button class="px-btn" onclick="goToCharSelect()" style="font-size:16px;padding:14px 32px; font-weight:bold;">😎 캐릭터 선택하기</button>
     <div class="title-maker">만든이 : 떠우엄마 / 아이디어 : 떠우</div>
@@ -2631,6 +2659,12 @@ body{
         <div id="stamp-collection">
           <div class="stamp-title">STAMPS</div>
           <div class="stamp-grid" id="stamp-dots"></div>
+        </div>
+        <div class="explore-goal-card" id="explore-goal-card">
+          <div class="explore-goal-kicker">TODAY QUEST</div>
+          <div class="explore-goal-title">춘천 미리 탐험 중</div>
+          <div class="explore-goal-copy" id="explore-goal-copy">관광지 3곳과 미션 3개를 먼저 완료해보세요.</div>
+          <div class="explore-goal-mini" id="explore-goal-mini">방문 0/3 · 미션 0/3</div>
         </div>
       </div>
       </div>
@@ -2740,6 +2774,12 @@ body{
                 </div>
 
                 <div class="learning-right">
+                  <div class="learning-mission-box" id="learning-mission-box">
+                    <div class="learning-mission-kicker">탐험 미션</div>
+                    <div class="learning-mission-title" id="learning-mission-title">가서 찾아볼 단서를 확인해보세요.</div>
+                    <div class="learning-mission-copy" id="learning-mission-copy">이 장소에서 꼭 봐야 할 포인트를 먼저 기억해두세요.</div>
+                    <div class="learning-mission-status" id="learning-mission-status">아직 미션 전</div>
+                  </div>
                   <div class="learning-quiz" id="learning-quiz-wrap">
                     <div class="learning-quiz-head">
                       <div>
@@ -3086,7 +3126,7 @@ function bindSoundEvents(){
   }, true);
 }
 
-document.addEventListener('DOMContentLoaded', bindSoundEvents);
+document.addEventListener('DOMContentLoaded', function(){ bindSoundEvents(); updateExploreGoalCard(); });
 </script>
 
 
@@ -4112,7 +4152,7 @@ function renderLearningPanel(loc){
   }
   if(qEl && choicesEl){
     const quiz = getRandomLearningQuiz(loc, data);
-    if(titleEl) titleEl.textContent = '학습퀴즈';
+    if(titleEl) titleEl.textContent = '탐험 미션 퀴즈';
     if(!quiz){
       qEl.textContent = '퀴즈가 아직 준비되지 않았어요.';
       choicesEl.innerHTML = '';
@@ -4138,6 +4178,7 @@ function renderLearningPanel(loc){
         quizStats.answered += 1;
         if(isCorrect) quizStats.correct += 1;
         saveQuizStats();
+        if(isCorrect && typeof markLearningMissionComplete === 'function') markLearningMissionComplete(loc);
         updateCompletionSummary();
         if(resultEl){
           playSound(isCorrect ? 'correct' : 'wrong');
@@ -5026,6 +5067,8 @@ switchModalTab = async function(tabName){
 
   if(tabName === 'learning'){
     renderLearningPanel(loc);
+  renderLocationMissionBox(loc);
+  updateExploreGoalCard();
     return;
   }
   if(tabName === 'chatbot'){
@@ -6215,6 +6258,7 @@ function updateVisitCounter(){
 function saveVisited(){ safeSetItem('gochuncheon_visited', JSON.stringify([...visitedIds])); }
 
 function updateCompletionSummary(){
+  updateExploreGoalCard();
   const visitEl = document.getElementById('completion-visit-rate');
   const quizEl = document.getElementById('completion-quiz-rate');
   const focusEl = document.getElementById('completion-learning-focus');
@@ -6432,6 +6476,7 @@ async function onMarkerClick(loc){
     const dot=document.getElementById('stamp-'+loc.id); if(dot){ dot.classList.add('filled'); dot.style.transform='scale(1.55)'; setTimeout(()=>dot.style.transform='',300); }
     updateVisitCounter();
     showToast('📮 '+loc.title_ko+' 방문 완료!');
+    updateExploreGoalCard();
     maybeShowCompletion();
   }
   const currentQuest = getCurrentQuest();
@@ -6449,6 +6494,8 @@ async function onMarkerClick(loc){
 
 function resetVisited(){
   visitedIds.clear(); saveVisited();
+  learningMissionIds.clear(); saveLearningMissionState();
+  updateExploreGoalCard();
   quizStats = { answered:0, correct:0 };
   saveQuizStats();
   completionShown = false;
@@ -6466,6 +6513,42 @@ function resetVisited(){
   showToast('↺ 방문 기록과 퀘스트가 초기화되었습니다');
   setTimeout(()=>openCurrentQuestPanel(), 180);
   setTimeout(maybeShowInitialQuestPopup, 120);
+}
+
+
+let learningMissionIds = new Set(JSON.parse(safeGetItem('gochuncheon_learning_missions') || '[]'));
+function saveLearningMissionState(){ safeSetItem('gochuncheon_learning_missions', JSON.stringify([...learningMissionIds])); }
+function hasLearningMissionDone(locId){ return learningMissionIds.has(Number(locId)); }
+function getMissionCounts(){ return { visitedGoal: Math.min(visitedIds.size, 3), learningGoal: Math.min(learningMissionIds.size, 3) }; }
+function updateExploreGoalCard(){
+  const copyEl = document.getElementById('explore-goal-copy');
+  const miniEl = document.getElementById('explore-goal-mini');
+  if(!copyEl || !miniEl) return;
+  const counts = getMissionCounts();
+  const done = counts.visitedGoal >= 3 && counts.learningGoal >= 3;
+  copyEl.textContent = done ? '춘천 방문 전에 볼 포인트를 충분히 익혔어요. 이제 실제 여행이 더 재밌어져요!' : '관광지 3곳과 미션 3개를 먼저 완료해보세요.';
+  miniEl.textContent = `방문 ${counts.visitedGoal}/3 · 미션 ${counts.learningGoal}/3`;
+}
+function renderLocationMissionBox(loc){
+  const titleEl = document.getElementById('learning-mission-title');
+  const copyEl = document.getElementById('learning-mission-copy');
+  const statusEl = document.getElementById('learning-mission-status');
+  if(!titleEl || !copyEl || !statusEl || !loc) return;
+  const detail = getLearningDetail(loc);
+  const firstPoint = Array.isArray(detail.learning_points) && detail.learning_points[0] ? detail.learning_points[0] : `${loc.title_ko}의 특징을 하나 찾아보세요.`;
+  titleEl.textContent = `${loc.title_ko}에서 꼭 찾을 단서`;
+  copyEl.textContent = firstPoint;
+  const done = hasLearningMissionDone(loc.id);
+  statusEl.textContent = done ? '완료! 미션 성공' : '아직 미션 전';
+  statusEl.classList.toggle('done', done);
+}
+function markLearningMissionComplete(loc){
+  if(!loc || learningMissionIds.has(Number(loc.id))) { renderLocationMissionBox(loc); updateExploreGoalCard(); return; }
+  learningMissionIds.add(Number(loc.id));
+  saveLearningMissionState();
+  renderLocationMissionBox(loc);
+  updateExploreGoalCard();
+  if(typeof showToast === 'function') showToast(`🎯 ${loc.title_ko} 미션 완료!`);
 }
 
 function openModal(loc){ window.__currentModalLocation = loc;
@@ -7321,6 +7404,37 @@ document.addEventListener('DOMContentLoaded', function(){
   if(intro) intro.textContent = '춘천쌤에게 이 장소를 가기 전에 알면 좋은 점을 물어보세요!';
   var input = document.getElementById('inline-chat-input');
   if(input) input.placeholder = '춘천쌤에게 궁금한 점을 입력하세요...';
+});
+</script>
+
+
+<script>
+function syncMobileGoalHud(){
+  const hud = document.getElementById('mobile-goal-hud');
+  const textEl = document.getElementById('mobile-goal-hud-text');
+  const mapScreen = document.getElementById('screen-map');
+  if(!hud || !textEl || !mapScreen) return;
+
+  const show = window.innerWidth <= 700 && !mapScreen.classList.contains('hidden');
+  hud.style.display = show ? 'flex' : 'none';
+  if(!show) return;
+
+  const visitCount = (window.visitedIds && typeof window.visitedIds.size === 'number') ? window.visitedIds.size : 0;
+  const missionCount = (window.completedMissionIds && typeof window.completedMissionIds.size === 'number') ? window.completedMissionIds.size : 0;
+
+  if(missionCount >= 3 || visitCount >= 3){
+    textEl.textContent = '탐험 준비 완료! 다음 장소도 살펴보세요.';
+  }else if(visitCount === 0 && missionCount === 0){
+    textEl.textContent = '3곳 둘러보고 퀴즈나 미션을 해보세요.';
+  }else{
+    textEl.textContent = `방문 ${visitCount}/3 · 미션 ${missionCount}/3 진행 중`;
+  }
+}
+window.addEventListener('resize', syncMobileGoalHud);
+document.addEventListener('DOMContentLoaded', function(){
+  syncMobileGoalHud();
+  setTimeout(syncMobileGoalHud, 300);
+  setInterval(syncMobileGoalHud, 1200);
 });
 </script>
 
