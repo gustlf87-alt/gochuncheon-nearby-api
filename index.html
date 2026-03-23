@@ -764,7 +764,7 @@ canvas.pixel-sprite{image-rendering:pixelated;display:block;background:transpare
   }
   .course-actions{
     gap:6px !important;
-    margin-top:10px !important;
+    margin-top:3px !important;
   }
   .course-actions .px-btn{
     font-size:11px !important;
@@ -3002,6 +3002,210 @@ body{
 }
 </style>
 
+
+<style>
+/* v22 course panel cleanup */
+.course-box{
+  width:min(100%,760px) !important;
+  max-height:min(86vh, 860px) !important;
+  display:flex;
+  flex-direction:column;
+  padding:18px 18px 14px !important;
+}
+.course-title{
+  margin-bottom:4px !important;
+}
+.course-sub{
+  margin-bottom:12px !important;
+}
+.course-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:12px !important;
+  overflow:auto;
+  padding-right:2px;
+}
+.course-card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px !important;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fffdf7 0%,#f7f1e4 100%) !important;
+  border:2px solid rgba(26,26,46,.14) !important;
+  box-shadow:3px 3px 0 rgba(26,26,46,.12) !important;
+}
+.course-card h4{
+  margin:0 !important;
+  font-size:15px !important;
+  line-height:1.4 !important;
+}
+.course-card p{
+  margin:0 !important;
+  font-size:12px !important;
+  line-height:1.65 !important;
+  color:#4b5563 !important;
+}
+.course-mini-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:-2px;
+}
+.course-count{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:0 8px;
+  border-radius:999px;
+  background:#eef5ff;
+  border:1px solid #bfd3ff;
+  color:#21458f;
+  font-size:11px;
+  font-family:var(--ko);
+}
+.course-preview{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.course-preview-chip{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid rgba(26,26,46,.12);
+  color:#334155;
+  font-size:11px;
+  font-family:var(--ko);
+}
+.course-preview-more{
+  background:#f4efe2;
+  color:#6b7280;
+}
+.course-actions{
+  display:flex !important;
+  gap:8px !important;
+  flex-wrap:nowrap !important;
+  margin-top:auto;
+  padding-top:2px;
+}
+.course-actions .px-btn{
+  flex:1 1 auto;
+}
+.course-panel-footer{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:2px solid rgba(26,26,46,.10);
+  background:linear-gradient(180deg,rgba(245,239,224,0) 0%, rgba(245,239,224,.96) 18%);
+  position:sticky;
+  bottom:0;
+}
+.course-panel-footer .px-btn{
+  min-width:120px;
+}
+.course-clear-btn{
+  background:var(--aiai) !important;
+  color:#fff !important;
+ border: var(--border);
+ box-shadow: var(--shadow) !important;
+}
+.course-clear-btn:hover{
+  transform:translate(1px,1px) !important;
+  box-shadow:1px 1px 0 rgba(26,26,46,.10) !important;
+}
+@media (max-width:768px){
+  .course-box{
+    width:100% !important;
+    max-width:560px !important;
+    max-height:calc(100dvh - 20px) !important;
+    padding:12px !important;
+  }
+  .course-grid{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+  .course-card{
+    padding:12px !important;
+    border-radius:14px;
+  }
+  .course-card h4{
+    font-size:14px !important;
+  }
+  .course-card p{
+    font-size:11px !important;
+  }
+  .course-preview-chip,
+  .course-count{
+    font-size:10px;
+  }
+  .course-panel-footer{
+    gap:6px;
+    margin-top:10px;
+    padding-top:10px;
+  }
+  .course-panel-footer .px-btn{
+    flex:1 1 0;
+    min-width:0;
+    padding:8px 6px !important;
+    font-size:11px !important;
+  }
+}
+</style>
+
+
+<style>
+/* v23 course preview 2-column chips */
+.course-preview{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  gap:6px !important;
+}
+
+.course-preview-chip{
+  width:100% !important;
+  max-width:100% !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+</style>
+
+
+<style>
+/* v24 course preview visible fix */
+.course-preview{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:5px !important;
+}
+.course-preview-chip{
+  width:100% !important;
+  min-width:0 !important;
+  padding:3px 8px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  background:#fff !important;
+  border:1px solid rgba(26,26,46,.12) !important;
+  border-radius:999px !important;
+  color:#334155 !important;
+  font-size:10px !important;
+  font-family:var(--ko) !important;
+}
+@media (max-width:768px){
+  .course-preview{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -3303,8 +3507,8 @@ body{
     <div class="course-title">🗺 나만의 여행 만들기</div>
     <div class="course-sub">춘천 🗺 나만의 여행 만들기를 골라보세요. 시작하면 지도에서 해당 관광지가 강조돼요.</div>
     <div class="course-grid" id="course-grid"></div>
-    <div class="course-actions" style="justify-content:flex-end;margin-top:14px;">
-      <button class="px-btn sm teal" type="button" onclick="clearCourseHighlight(); closeCoursePanel()">하이라이트 해제</button>
+    <div class="course-panel-footer">
+      <button class="px-btn sm course-clear-btn" type="button" onclick="clearCourseHighlight(); closeCoursePanel()">하이라이트 해제</button>
       <button class="px-btn sm" type="button" onclick="closeCoursePanel()">닫기</button>
     </div>
   </div>
@@ -6046,20 +6250,34 @@ function renderCourseCards(){
   const grid = document.getElementById('course-grid');
   if(!grid) return;
   grid.innerHTML = '';
+
   const allCourses = [...COURSE_SETS];
   if(aiRecommendation && Array.isArray(aiRecommendation.spots)) allCourses.unshift(aiRecommendation);
+
   allCourses.forEach(course => {
     const card = document.createElement('div');
     card.className = 'course-card';
-    const names = course.spots.map(id => LOCATIONS.find(loc => loc.id === id)?.title_ko).filter(Boolean);
-    const action = course.id === 'ai-custom'
-      ? `<button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()">AI 코스 적용</button>`
+
+    const names = course.spots
+      .map(id => LOCATIONS.find(loc => loc.id === id)?.title_ko)
+      .filter(Boolean);
+
+    const actionHtml = course.id === 'ai-custom'
+      ? '<button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()">AI 코스 적용</button>'
       : `<button class="px-btn sm teal" type="button" onclick="highlightCourse('${course.id}')">지도에서 보기</button>`;
+
     card.innerHTML = `
       <h4>${course.title}</h4>
       <p>${course.desc || course.summary || ''}</p>
-      <div class="course-list">${names.map((name, idx) => `<div class="course-stop">${idx+1}. ${name}</div>`).join('')}</div>
-      <div class="course-actions">${action}</div>
+      <div class="course-mini-meta">
+        <span class="course-count">총 ${names.length}곳</span>
+      </div>
+      <div class="course-preview">
+        ${names.map(name => `<span class="course-preview-chip" title="${name}">${name}</span>`).join('')}
+      </div>
+      <div class="course-actions">
+        ${actionHtml}
+      </div>
     `;
     grid.appendChild(card);
   });
