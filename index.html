@@ -2980,19 +2980,19 @@ body{
   <div class="mobile-goal-hud-icon">🎯</div>
   <div class="mobile-goal-hud-body">
     <div class="mobile-goal-hud-title">오늘의 탐험 목표</div>
-    <div class="mobile-goal-hud-text" id="mobile-goal-hud-text">3곳 둘러보고 퀴즈나 미션을 해보세요.</div>
+    <div class="mobile-goal-hud-text" id="mobile-goal-hud-text">3곳 둘러보고 퀴즈와 미션에 도전해보자!</div>
   </div>
 </div>
 
-<button id="floating-game-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="메뉴 열기">☰</button>
+<button id="floating-game-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="메뉴">☰</button>
 <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" onclick="toggleMobileMenu(false)"></div>
 <div class="mobile-menu-panel" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-head">
     <div class="mobile-menu-title">MENU</div>
   </div>
   <div class="mobile-menu-actions">
-    <button class="px-btn sm" type="button" onclick="mobileGoHome()">홈으로</button>
-    <button class="px-btn sm cherry" type="button" onclick="mobileResetJourney()">처음부터</button>
+    <button class="px-btn sm" type="button" onclick="mobileGoHome()">처음 화면</button>
+    <button class="px-btn sm cherry" type="button" onclick="mobileResetJourney()">다시 하기</button>
     <button class="px-btn sm teal" type="button" id="mobile-cert-btn" onclick="mobileDownloadCertificate()" style="display:none;">인증서저장</button>
   </div>
 
@@ -3014,7 +3014,7 @@ body{
     </div>
     <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🗺 나만의 여행 만들기</button>
   </div>
-  <div class="mobile-menu-note">지도 필터와 🗺 나만의 여행 만들기를 확인할 수 있어요.</div>
+  <div class="mobile-menu-note">지도 종류를 고르고, 나만의 여행도 만들어볼 수 있어요!</div>
 
 </div>
 
@@ -3026,12 +3026,12 @@ body{
     <div class="title-ko">고 춘 천</div>
     
 <div style="text-align:center;margin-top:10px;font-size:14px;">
-<strong>강원도 여행을 게임처럼 배우는<br/>교육형 관광 서비스</strong>
+<strong>춘천을 게임처럼 배우며 떠나는<br/>신나는 여행 준비 놀이터</strong>
 </div>
-<div class="title-sub">픽셀 지도로 떠나는 춘천 여행 ✦ <br/>건물 아이콘을 눌러 관광지를 탐험해보세요.</div>
+<div class="title-sub">픽셀 지도에서 춘천을 먼저 만나봐요 ✦ <br/>아이콘을 눌러 재미있는 장소를 탐험해보세요!</div>
     <div class="title-mission-board">
-      <div class="title-mission-kicker">🎯 탐험 준비 완료</div>
-      <div class="title-mission-text">춘천에 가기 전에 관광지 이야기를 미리 보고,<br/>퀴즈와 미션으로 <strong>3곳 이상</strong> 먼저 탐험해보세요!</div>
+      <div class="title-mission-kicker">🎯 탐험 준비!</div>
+      <div class="title-mission-text">춘천에 가기 전에 재미있는 장소 이야기를 먼저 보고,<br/>퀴즈와 미션으로 <strong>3곳 이상</strong> 미리 탐험해보자!</div>
     </div>
     <div class="title-character-preview" id="title-preview"></div>
     <button class="px-btn" onclick="goToCharSelect()" style="font-size:16px;padding:14px 32px; font-weight:bold;">😎 캐릭터 선택하기</button>
@@ -3041,22 +3041,22 @@ body{
 
 <div id="screen-character" class="screen hidden">
   <div class="char-title">CHOOSE YOUR TRAVELER</div>
-  <div class="char-subtitle">누구와 함께 춘천을 여행할까요? 😽</div>
+  <div class="char-subtitle">누구와 함께 춘천으로 떠나볼까요? 😽</div>
   <div class="char-grid" id="char-grid"></div>
   <button class="px-btn" id="btn-start-journey" onclick="startJourney()" style="opacity:1;pointer-events:auto; font-size:16px;padding:14px 32px; font-weight:bold;">춘천여행시작 →</button>
-  <div class="helper-line">실제 지형과 다를 수 있습니다:) 모바일에서는 지도를 드래그해서 이동해보세요.</div>
+  <div class="helper-line">실제 지도와 조금 다를 수 있어요 :) 모바일에서는 지도를 손으로 움직여보세요!</div>
 </div>
 
 <div id="screen-map" class="screen hidden">
   <div class="map-hud">
     <div class="hud-title">GO CHUNCHEON</div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu(true)" aria-label="메뉴 열기">☰</button>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu(true)" aria-label="메뉴">☰</button>
     <div class="hud-counter"><span id="visit-count">0</span>/<span id="total-count">0</span> 방문</div>
     <div class="hud-progress" aria-label="탐험 진행도"><span class="hud-progress-fill" id="hud-progress-fill"></span><span class="hud-progress-text" id="hud-progress-text">0%</span></div>
     <div class="hud-quest" id="hud-quest" onclick="openCurrentQuestPanel()">퀘스트: 남이섬으로 이동해 첫 여행을 시작해보세요.</div>
     <button class="px-btn sm" id="hud-cert-btn" onclick="downloadCompletionCertificate()" style="display:none;">📸 CERT</button>
-    <button class="px-btn sm cherry" onclick="resetVisited()">처음부터 다시</button>
-    <button class="px-btn sm" onclick="goToTitle()">홈으로</button>
+    <button class="px-btn sm cherry" onclick="resetVisited()">다시 하기 다시</button>
+    <button class="px-btn sm" onclick="goToTitle()">처음 화면</button>
   </div>
   
   <div class="map-toolbar" id="map-toolbar">
@@ -3090,9 +3090,9 @@ body{
           <div class="stamp-grid" id="stamp-dots"></div>
         </div>
         <div class="explore-goal-card" id="explore-goal-card">
-          <div class="explore-goal-kicker">TODAY QUEST</div>
-          <div class="explore-goal-title">춘천 미리 탐험 중</div>
-          <div class="explore-goal-copy" id="explore-goal-copy">관광지 3곳과 미션 3개를 먼저 완료해보세요.</div>
+          <div class="explore-goal-kicker">TODAY</div>
+          <div class="explore-goal-title">춘천 미리 탐험 중!</div>
+          <div class="explore-goal-copy" id="explore-goal-copy">관광지 3곳과 미션 3개를 먼저 해보자!</div>
           <div class="explore-goal-mini" id="explore-goal-mini">방문 0/3 · 미션 0/3</div>
         </div>
       </div>
@@ -3101,7 +3101,7 @@ body{
     </div>
     <div class="mobile-bottom-panel" id="mobile-bottom-panel">
       <div class="mobile-quest-card">
-        <div class="mobile-panel-kicker">현재 퀘스트</div>
+        <div class="mobile-panel-kicker">지금 미션</div>
         <div class="mobile-panel-row">
           <div class="mobile-panel-text" id="mobile-quest-text">남이섬으로 이동해 첫 여행을 시작해보세요.</div>
           <button class="mobile-inline-btn" type="button" onclick="openCurrentQuestPanel()">미션 보기</button>
@@ -3110,7 +3110,7 @@ body{
       <div class="mobile-visit-card">
         <div class="mobile-visit-row">
           <div>
-            <div class="mobile-panel-kicker">방문 진행도</div>
+            <div class="mobile-panel-kicker">탐험 진행도</div>
             <div class="mobile-panel-text" id="mobile-visit-text">0 / 25곳 방문</div>
           </div>
         </div>
@@ -3211,7 +3211,7 @@ body{
                   <div class="learning-quiz" id="learning-quiz-wrap">
                     <div class="learning-quiz-head">
                       <div>
-                        <div class="learning-quiz-title">미리 도전!</div>
+                        <div class="learning-quiz-title">❓ 퀴즈 도전!</div>
                       </div>
                     </div>
                     <div class="learning-quiz-q" id="learning-quiz-q"></div>
@@ -3241,13 +3241,13 @@ body{
         <div class="inline-chat-wrap">
           <div class="inline-chat-intro" id="inline-chat-intro">
             <div class="inline-chat-bot-icon">🤖</div>
-            <div class="inline-chat-intro-text" id="inline-chat-intro-text">이 관광지에 대해 궁금한 것을 물어보세요!</div>
+            <div class="inline-chat-intro-text" id="inline-chat-intro-text">춘천쌤에게 이 장소에서 뭘 보면 좋은지 물어보세요!</div>
           </div>
           <div class="inline-chat-messages" id="inline-chat-messages"></div>
           <div class="inline-chat-quick" id="inline-chat-quick"></div>
           <div class="inline-chat-input-row">
-            <input class="inline-chat-input" id="inline-chat-input" type="text" placeholder="궁금한 점을 입력하세요..." autocomplete="off" maxlength="200"/>
-            <button class="inline-chat-send" type="button" onclick="sendInlineChatMessage()">전송</button>
+            <input class="inline-chat-input" id="inline-chat-input" type="text" placeholder="춘천쌤에게 궁금한 걸 적어보세요..." autocomplete="off" maxlength="200"/>
+            <button class="inline-chat-send" type="button" onclick="sendInlineChatMessage()">보내기</button>
           </div>
         </div>
       </div>
@@ -3391,7 +3391,7 @@ body{
       <button class="px-btn teal" type="button" onclick="downloadCompletionCertificate()">인증서 저장</button>
       <button class="px-btn teal" type="button" onclick="shareCompletionResult()">SNS 공유</button>
       <button class="px-btn teal" type="button" onclick="closeCompletion()">계속 둘러보기</button>
-      <button class="px-btn" type="button" onclick="resetVisited(); closeCompletion();">처음부터 다시</button>
+      <button class="px-btn" type="button" onclick="resetVisited(); closeCompletion();">다시 하기 다시</button>
     </div>
   </div>
 </div>
@@ -6986,7 +6986,7 @@ function updateExploreGoalCard(){
   if(!copyEl || !miniEl) return;
   const counts = getMissionCounts();
   const done = counts.visitedGoal >= 3 && counts.learningGoal >= 3;
-  copyEl.textContent = done ? '춘천 방문 전에 볼 포인트를 충분히 익혔어요. 이제 실제 여행이 더 재밌어져요!' : '관광지 3곳과 미션 3개를 먼저 완료해보세요.';
+  copyEl.textContent = done ? '춘천 방문 전에 볼 포인트를 충분히 익혔어요. 이제 실제 여행이 더 재밌어져요!' : '관광지 3곳과 미션 3개를 먼저 해보자!';
   miniEl.textContent = `방문 ${counts.visitedGoal}/3 · 미션 ${counts.learningGoal}/3`;
 }
 function renderLocationMissionBox(loc){
@@ -7567,7 +7567,7 @@ function playSound(type){
     btn.style.display = shouldShow ? 'flex' : 'none';
     var isOpen = !!(menu && menu.classList.contains('open'));
     btn.textContent = isOpen ? '✕' : '☰';
-    btn.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+    btn.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴');
   }
 
   var originalToggle = window.toggleMobileMenu;
@@ -7863,7 +7863,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var intro = document.getElementById('inline-chat-intro-text');
   if(intro) intro.textContent = '춘천쌤에게 이 장소를 가기 전에 알면 좋은 점을 물어보세요!';
   var input = document.getElementById('inline-chat-input');
-  if(input) input.placeholder = '춘천쌤에게 궁금한 점을 입력하세요...';
+  if(input) input.placeholder = '춘천쌤에게 춘천쌤에게 궁금한 걸 적어보세요...';
 });
 </script>
 
@@ -7885,7 +7885,7 @@ function syncMobileGoalHud(){
   if(missionCount >= 3 || visitCount >= 3){
     textEl.textContent = '탐험 준비 완료! 다음 장소도 살펴보세요.';
   }else if(visitCount === 0 && missionCount === 0){
-    textEl.textContent = '3곳 둘러보고 퀴즈나 미션을 해보세요.';
+    textEl.textContent = '3곳 둘러보고 퀴즈와 미션에 도전해보자!';
   }else{
     textEl.textContent = `방문 ${visitCount}/3 · 미션 ${missionCount}/3 진행 중`;
   }
@@ -8114,10 +8114,10 @@ function closeGcAlert(event){
     const quizText = qEl ? String(qEl.textContent || '').trim() : '';
     const done = (typeof hasLearningMissionDone === 'function') ? hasLearningMissionDone(loc.id) : false;
 
-    titleEl.textContent = `${loc.title_ko} 미션`;
+    titleEl.textContent = '🎯 이 장소 미션';
     copyEl.textContent = done
-      ? '힌트를 보고, 현장에서 살펴보고, 퀴즈까지 완료했어요!'
-      : '힌트 → 관찰 → 퀴즈 순서로 이 장소를 더 분명하게 이해해보세요.';
+      ? '정말 잘했어! 이 장소를 아주 잘 살펴봤네 👍'
+      : '여기에서 꼭 봐야 할 걸 먼저 찾아보고, 퀴즈에 도전해보자!';
 
     let flow = box.querySelector('.learning-mission-flow');
     if(!flow){
@@ -8128,37 +8128,37 @@ function closeGcAlert(event){
 
     const hintText = makeMissionHintText(loc, detail);
     const observeText = makeMissionObserveText(loc, detail);
-    const quizLine = quizText || '아래 퀴즈를 풀어보세요.';
+    const quizLine = quizText || '얼마나 잘 봤는지 확인해볼까?';
     const completeText = done
-      ? '퀴즈 정답까지 완료! 이 장소 미션 성공'
-      : '퀴즈를 맞히면 이 장소 미션이 완료돼요.';
+      ? '정답을 맞혔어! 이 장소 미션 성공!' 
+      : '퀴즈를 맞히면 미션 성공이야!';
 
     flow.innerHTML = `
       <div class="learning-mission-step">
         <div class="learning-mission-step-icon">💡</div>
         <div class="learning-mission-step-body">
-          <strong class="learning-mission-step-label">힌트</strong>
+          <strong class="learning-mission-step-label">💡 먼저 보기</strong>
           <span class="learning-mission-step-text">${hintText}</span>
         </div>
       </div>
       <div class="learning-mission-step">
         <div class="learning-mission-step-icon">👀</div>
         <div class="learning-mission-step-body">
-          <strong class="learning-mission-step-label">관찰</strong>
+          <strong class="learning-mission-step-label">👀 찾아보기</strong>
           <span class="learning-mission-step-text">${observeText}</span>
         </div>
       </div>
       <div class="learning-mission-step ${quizText ? '' : 'no-quiz'}">
         <div class="learning-mission-step-icon">❓</div>
         <div class="learning-mission-step-body">
-          <strong class="learning-mission-step-label">퀴즈</strong>
+          <strong class="learning-mission-step-label">❓ 퀴즈 도전!</strong>
           <span class="learning-mission-step-text">${quizLine}</span>
         </div>
       </div>
       <div class="learning-mission-step">
         <div class="learning-mission-step-icon">${done ? '✅' : '🏁'}</div>
         <div class="learning-mission-step-body">
-          <strong class="learning-mission-step-label">완료</strong>
+          <strong class="learning-mission-step-label">🏁 성공하면</strong>
           <span class="learning-mission-step-text">${completeText}</span>
         </div>
       </div>
@@ -8166,10 +8166,10 @@ function closeGcAlert(event){
 
     statusEl.classList.remove('done','ready');
     if(done){
-      statusEl.textContent = '미션 완료 ✔';
+      statusEl.textContent = '🎉 미션 성공!';
       statusEl.classList.add('done');
     }else{
-      statusEl.textContent = '도전 가능';
+      statusEl.textContent = '도전 가능!';
       statusEl.classList.add('ready');
     }
   }
@@ -8203,7 +8203,44 @@ function closeGcAlert(event){
 
   document.addEventListener('DOMContentLoaded', function(){
     const titleEl = document.querySelector('#learning-quiz-wrap .learning-quiz-title');
-    if(titleEl) titleEl.textContent = '퀴즈 도전';
+    if(titleEl) titleEl.textContent = '❓ 퀴즈 도전!';
+  });
+})();
+</script>
+
+
+<script>
+function updateBottomNavVisibility(){
+  const nav = document.querySelector('.game-bottom-nav');
+  if(!nav) return;
+
+  const isTitle = !document.getElementById('screen-title')?.classList.contains('hidden');
+  const isChar = !document.getElementById('screen-character')?.classList.contains('hidden');
+
+  if(isTitle || isChar){
+    nav.style.display = 'none';
+  }else{
+    nav.style.display = 'flex';
+  }
+}
+
+// Hook into common navigation functions safely
+(function(){
+  const wrap = (fnName)=>{
+    if(typeof window[fnName] === 'function'){
+      const original = window[fnName];
+      window[fnName] = function(){
+        const result = original.apply(this, arguments);
+        setTimeout(updateBottomNavVisibility, 50);
+        return result;
+      }
+    }
+  }
+
+  ['goToCharSelect','startJourney','goHome','showMapScreen'].forEach(wrap);
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    updateBottomNavVisibility();
   });
 })();
 </script>
