@@ -2840,6 +2840,50 @@ body{
 }
 </style>
 
+
+<style>
+/* v11 character select alert */
+.gc-alert-overlay{
+  position:fixed; inset:0; background:rgba(6,10,18,.68);
+  display:flex; align-items:center; justify-content:center;
+  z-index:100500; padding:16px;
+}
+.gc-alert-overlay.hidden{display:none}
+.gc-alert-box{
+  width:min(100%, 360px);
+  background:linear-gradient(180deg,#fffaf0 0%, #f5efe0 100%);
+  border:3px solid #1a1a2e;
+  box-shadow:8px 8px 0 #1a1a2e;
+  padding:18px 16px 14px;
+  text-align:center;
+  border-radius:18px;
+}
+.gc-alert-icon{
+  width:58px; height:58px; margin:0 auto 10px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:999px;
+  background:#fff4cf;
+  border:3px solid #c9a554;
+  font-size:28px;
+}
+.gc-alert-title{
+  font:700 16px/1.4 var(--ko);
+  color:#1a1a2e; margin-bottom:6px;
+}
+.gc-alert-text{
+  font:500 13px/1.7 var(--ko);
+  color:#374151; margin-bottom:14px;
+}
+.gc-alert-actions{
+  display:flex; justify-content:center; gap:8px; flex-wrap:wrap;
+}
+@media (max-width:700px){
+  .gc-alert-box{width:min(100%, 320px); padding:16px 14px 12px}
+  .gc-alert-title{font-size:15px}
+  .gc-alert-text{font-size:12px}
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -3284,6 +3328,18 @@ body{
     <span class="game-nav-label">마이탐험</span>
     <span class="game-nav-badge" id="game-nav-badge">0</span>
   </button>
+</div>
+
+
+<div class="gc-alert-overlay hidden" id="gc-alert-overlay" onclick="closeGcAlert(event)">
+  <div class="gc-alert-box">
+    <div class="gc-alert-icon">😺</div>
+    <div class="gc-alert-title">캐릭터를 골라줘!</div>
+    <div class="gc-alert-text">춘천여행을 시작하려면 함께 떠날 캐릭터를 먼저 선택해 주세요.</div>
+    <div class="gc-alert-actions">
+      <button class="px-btn sm" type="button" onclick="closeGcAlert()">확인</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -7896,6 +7952,46 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(patchProgressHooks, 1000);
     setInterval(syncGlobalProgressState, 1200);
     setInterval(syncGameNavBadgeFixed, 1200);
+  });
+})();
+</script>
+
+
+<script>
+function openGcAlert(){
+  const el = document.getElementById('gc-alert-overlay');
+  if(el) el.classList.remove('hidden');
+}
+function closeGcAlert(event){
+  if(event && event.target && event.target !== event.currentTarget) return;
+  const el = document.getElementById('gc-alert-overlay');
+  if(el) el.classList.add('hidden');
+}
+
+(function(){
+  function patchStartJourneyGuard(){
+    if(typeof window.startJourney !== 'function' || window.__startJourneyGuardApplied) return;
+    const originalStartJourney = window.startJourney;
+    window.startJourney = function(){
+      let selected = null;
+      try{
+        if(typeof selectedCharacter !== 'undefined' && selectedCharacter) selected = selectedCharacter;
+      }catch(e){}
+      if(!selected){
+        const selectedCard = document.querySelector('.char-card.selected, .character-card.selected, .avatar-card.selected');
+        if(!selectedCard){
+          openGcAlert();
+          return false;
+        }
+      }
+      return originalStartJourney.apply(this, arguments);
+    };
+    window.__startJourneyGuardApplied = true;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    patchStartJourneyGuard();
+    setTimeout(patchStartJourneyGuard, 300);
   });
 })();
 </script>
