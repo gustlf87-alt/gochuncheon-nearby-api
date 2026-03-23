@@ -2541,6 +2541,245 @@ body{
 }
 </style>
 
+
+<style>
+/* v9 game-style HUD + bottom nav + map polish */
+:root{
+  --teal:#3fa7a0;
+  --teal-dk:#2c7c76;
+  --night2:#22334d;
+}
+#screen-map{
+  background:
+    radial-gradient(circle at 20% 15%, rgba(123,207,223,.10), transparent 18%),
+    radial-gradient(circle at 78% 18%, rgba(232,169,34,.10), transparent 16%),
+    linear-gradient(180deg,#0f1524 0%, #15243a 100%);
+}
+.map-hud{
+  height:64px;
+  padding:10px 14px;
+  gap:12px;
+  background:linear-gradient(180deg,#2a3d57 0%, #1a1a2e 100%);
+  border-bottom:3px solid var(--gold-dk);
+  box-shadow:0 4px 0 rgba(0,0,0,.18);
+}
+.hud-title{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  font-size:11px;
+  line-height:1.1;
+}
+.hud-title::after{
+  content:'탐험하면서 배우는 춘천 월드맵';
+  font-family:var(--ko);
+  font-size:10px;
+  color:#dfe9f4;
+  opacity:.82;
+  text-shadow:none;
+}
+.hud-counter{
+  min-width:98px;
+  padding:7px 10px;
+  border:2px solid rgba(63,167,160,.55);
+  background:rgba(7,13,23,.55);
+  color:#d8fff5;
+  border-radius:12px;
+  box-shadow:2px 2px 0 rgba(0,0,0,.18);
+}
+.hud-progress{
+  width:170px;
+  height:16px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#0d1623;
+  border:2px solid rgba(232,169,34,.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 2px 2px 0 rgba(0,0,0,.18);
+}
+.hud-progress-fill{
+  background:linear-gradient(90deg,#7bcfdf 0%, #3fa7a0 45%, #e8a922 100%);
+}
+.hud-progress-text{font-size:8px}
+.map-container{
+  top:64px;
+  padding:14px 14px 90px;
+}
+.map-stage{
+  border:3px solid #1a1a2e;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:
+    0 0 0 4px rgba(232,169,34,.18),
+    10px 10px 0 rgba(12,16,32,.42);
+}
+.map-stage::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.07);
+  pointer-events:none;
+  z-index:2;
+}
+#stamp-collection{
+  border-radius:18px;
+  padding:10px 10px 8px;
+  border:2px solid rgba(232,169,34,.45);
+  box-shadow:4px 4px 0 rgba(0,0,0,.22);
+  background:linear-gradient(180deg,rgba(26,26,46,.88) 0%, rgba(16,24,39,.88) 100%);
+}
+.stamp-title{
+  color:#ffe7a6;
+  font-family:var(--pixel);
+  letter-spacing:.04em;
+}
+.poi-label{
+  border-radius:12px;
+  padding:6px 10px;
+  box-shadow:3px 3px 0 #000;
+}
+.poi-wrap.course-highlight::before{
+  border-radius:999px;
+  padding:3px 7px;
+}
+.keyboard-hint{border-radius:14px}
+.explore-goal-card{
+  left:16px;
+  bottom:14px;
+  max-width:248px;
+  padding:12px 12px 11px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(26,26,46,.92) 0%, rgba(18,28,46,.92) 100%);
+  border:2px solid rgba(232,169,34,.42);
+  box-shadow:5px 5px 0 rgba(0,0,0,.24);
+}
+.explore-goal-kicker{color:#8fe9d7;font-size:10px}
+.explore-goal-title{font-size:13px}
+.explore-goal-copy,.explore-goal-mini{font-size:11px}
+.mobile-goal-hud{border-radius:14px}
+#floating-game-menu-btn{border-radius:12px !important}
+.map-toolbar{gap:10px}
+.search-box,.filter-chip,.toolbar-btn{border-radius:14px !important}
+.search-box{background:rgba(26,26,46,.94)}
+.search-box input{border-radius:10px}
+.filter-chip{padding:8px 10px}
+.filter-chip.active{background:var(--teal)}
+.modal-tabs{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.modal-tab{
+  min-width:0;
+  text-align:center;
+  border-radius:14px;
+  padding:10px 8px;
+}
+.game-bottom-nav{
+  position:fixed;
+  left:max(12px, env(safe-area-inset-left));
+  right:max(12px, env(safe-area-inset-right));
+  bottom:calc(10px + env(safe-area-inset-bottom));
+  z-index:100160;
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:10px;
+  pointer-events:none;
+}
+.game-nav-btn{
+  position:relative;
+  pointer-events:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  min-height:72px;
+  padding:10px 6px 8px;
+  border:3px solid #1a1a2e;
+  border-radius:18px;
+  background:linear-gradient(180deg,#604321 0%, #3f2d16 100%);
+  box-shadow:4px 4px 0 rgba(0,0,0,.28), inset 0 2px 0 rgba(255,255,255,.10);
+  color:#fff6dd;
+  font-family:var(--ko);
+  cursor:pointer;
+}
+.game-nav-btn:active{
+  transform:translateY(2px);
+  box-shadow:2px 2px 0 rgba(0,0,0,.28), inset 0 2px 0 rgba(255,255,255,.10);
+}
+.game-nav-icon{font-size:24px;line-height:1}
+.game-nav-label{font-size:11px;line-height:1.1;white-space:nowrap}
+.game-nav-badge{
+  position:absolute;
+  top:8px;
+  right:10px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--gold);
+  border:2px solid var(--gold-dk);
+  color:#1a1a2e;
+  font-size:9px;
+  font-family:var(--pixel);
+}
+@media (min-width:701px){
+  .game-bottom-nav{
+    left:auto;
+    right:18px;
+    bottom:18px;
+    width:min(520px, calc(100vw - 36px));
+  }
+}
+@media (max-width:700px){
+  .map-container{
+    top:0 !important;
+    padding:0 8px 96px !important;
+  }
+  .map-toolbar{
+    top:max(62px, calc(env(safe-area-inset-top) + 58px)) !important;
+    left:max(8px, env(safe-area-inset-left)) !important;
+    right:max(8px, env(safe-area-inset-right)) !important;
+  }
+  .map-stage{
+    border-radius:20px;
+    box-shadow:0 0 0 3px rgba(232,169,34,.14), 6px 6px 0 rgba(12,16,32,.35);
+  }
+  .modal-tabs{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  .modal-tab{
+    width:100%;
+    padding:10px 4px;
+    font-size:11px;
+  }
+  .game-bottom-nav{
+    left:max(8px, env(safe-area-inset-left));
+    right:max(8px, env(safe-area-inset-right));
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    gap:8px;
+  }
+  .game-nav-btn{
+    min-height:66px;
+    border-radius:16px;
+    padding:8px 4px 7px;
+  }
+  .game-nav-icon{font-size:20px}
+  .game-nav-label{
+    font-size:10px;
+    letter-spacing:-.02em;
+  }
+  #mobile-bottom-panel{
+    display:none !important;
+  }
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -2559,7 +2798,6 @@ body{
 <div class="mobile-menu-panel" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-head">
     <div class="mobile-menu-title">MENU</div>
-    <button class="mobile-menu-close" type="button" onclick="toggleMobileMenu(false)" aria-label="메뉴 닫기">✕</button>
   </div>
   <div class="mobile-menu-actions">
     <button class="px-btn sm" type="button" onclick="mobileGoHome()">홈으로</button>
@@ -2748,7 +2986,6 @@ body{
               <div class="learning-hero-card">
                 <div class="learning-section-header">
                   <h3 class="learning-section-title">먼저 알고 가기</h3>
-                  <p class="learning-section-desc">가서 보면 더 재밌어요!</p>
                 </div>
                 <div class="learning-summary" id="learning-summary"></div>
               </div>
@@ -2758,7 +2995,7 @@ body{
 
                   <div class="learning-card-grid">
                     <div class="learning-box learning-points-box">
-                      <div class="learning-box-title">먼저 보면 좋은 포인트</div>
+                      <div class="learning-box-title">먼저 보면 좋은포인트</div>
                       <ul class="learning-list" id="learning-points"></ul>
                     </div>
                     <div class="learning-box learning-curriculum-box">
@@ -2784,7 +3021,6 @@ body{
                     <div class="learning-quiz-head">
                       <div>
                         <div class="learning-quiz-title">미리 도전!</div>
-                        <p class="learning-quiz-copy">답은 가서 확인!</p>
                       </div>
                     </div>
                     <div class="learning-quiz-q" id="learning-quiz-q"></div>
@@ -2967,6 +3203,27 @@ body{
       <button class="px-btn" type="button" onclick="resetVisited(); closeCompletion();">처음부터 다시</button>
     </div>
   </div>
+</div>
+
+
+<div class="game-bottom-nav" id="game-bottom-nav">
+  <button class="game-nav-btn" type="button" onclick="focusGameMap()">
+    <span class="game-nav-icon">🗺️</span>
+    <span class="game-nav-label">지도</span>
+  </button>
+  <button class="game-nav-btn" type="button" onclick="openCurrentQuestPanel()">
+    <span class="game-nav-icon">📒</span>
+    <span class="game-nav-label">탐험노트</span>
+  </button>
+  <button class="game-nav-btn" type="button" onclick="openCoursePanel()">
+    <span class="game-nav-icon">🎒</span>
+    <span class="game-nav-label">여행코스</span>
+  </button>
+  <button class="game-nav-btn" type="button" onclick="openGameMenuShortcut()">
+    <span class="game-nav-icon">🏠</span>
+    <span class="game-nav-label">마이탐험</span>
+    <span class="game-nav-badge" id="game-nav-badge">0</span>
+  </button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -4152,7 +4409,7 @@ function renderLearningPanel(loc){
   }
   if(qEl && choicesEl){
     const quiz = getRandomLearningQuiz(loc, data);
-    if(titleEl) titleEl.textContent = '탐험 미션 퀴즈';
+    if(titleEl) titleEl.textContent = '탐험미션퀴즈';
     if(!quiz){
       qEl.textContent = '퀴즈가 아직 준비되지 않았어요.';
       choicesEl.innerHTML = '';
@@ -7435,6 +7692,34 @@ document.addEventListener('DOMContentLoaded', function(){
   syncMobileGoalHud();
   setTimeout(syncMobileGoalHud, 300);
   setInterval(syncMobileGoalHud, 1200);
+});
+</script>
+
+
+<script>
+function focusGameMap(){
+  try{
+    const viewport = document.getElementById('map-viewport');
+    if(viewport) viewport.scrollIntoView({behavior:'smooth', block:'center'});
+  }catch(e){}
+}
+function openGameMenuShortcut(){
+  if(window.innerWidth <= 700){
+    toggleMobileMenu(true);
+  }else{
+    openProfileOverlay();
+  }
+}
+function syncGameNavBadge(){
+  const badge = document.getElementById('game-nav-badge');
+  if(!badge) return;
+  const visitedCount = (window.visitedIds && typeof window.visitedIds.size === 'number') ? window.visitedIds.size : 0;
+  badge.textContent = String(visitedCount);
+}
+document.addEventListener('DOMContentLoaded', function(){
+  syncGameNavBadge();
+  setTimeout(syncGameNavBadge, 300);
+  setInterval(syncGameNavBadge, 1500);
 });
 </script>
 
