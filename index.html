@@ -2780,6 +2780,66 @@ body{
 }
 </style>
 
+
+<style>
+/* v10 visit badge sync + stamp burst */
+.stamp-burst{
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(.5) rotate(-12deg);
+  z-index:100400;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  opacity:0;
+  animation:stampBurstPop .9s cubic-bezier(.22,.9,.28,1) forwards;
+}
+.stamp-burst-mark{
+  min-width:88px;
+  min-height:88px;
+  padding:10px 14px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(232,169,34,.18);
+  border:4px solid rgba(200,59,59,.82);
+  box-shadow:0 0 0 4px rgba(255,255,255,.08), 6px 6px 0 rgba(26,26,46,.22);
+  color:#c83b3b;
+  font-family:var(--pixel);
+  font-size:13px;
+  letter-spacing:.04em;
+}
+.stamp-burst-text{
+  background:rgba(26,26,46,.92);
+  color:#fff6dd;
+  border:2px solid rgba(232,169,34,.48);
+  box-shadow:3px 3px 0 rgba(0,0,0,.22);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  line-height:1;
+  font-family:var(--ko);
+}
+@keyframes stampBurstPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.38) rotate(-18deg)}
+  18%{opacity:1;transform:translate(-50%,-50%) scale(1.08) rotate(-10deg)}
+  55%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-12deg)}
+  100%{opacity:0;transform:translate(-50%,-54%) scale(.96) rotate(-12deg)}
+}
+.game-nav-badge.is-pop{
+  animation:gameBadgePop .42s ease;
+}
+@keyframes gameBadgePop{
+  0%{transform:scale(.7)}
+  40%{transform:scale(1.28)}
+  100%{transform:scale(1)}
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -7721,6 +7781,123 @@ document.addEventListener('DOMContentLoaded', function(){
   setTimeout(syncGameNavBadge, 300);
   setInterval(syncGameNavBadge, 1500);
 });
+</script>
+
+
+<script>
+(function(){
+  function getVisitedSet(){
+    try{
+      if(typeof visitedIds !== 'undefined' && visitedIds) return visitedIds;
+    }catch(e){}
+    if(window.visitedIds && typeof window.visitedIds.size === 'number') return window.visitedIds;
+    return null;
+  }
+
+  function getMissionSet(){
+    try{
+      if(typeof learningMissionIds !== 'undefined' && learningMissionIds) return learningMissionIds;
+    }catch(e){}
+    try{
+      if(typeof completedMissionIds !== 'undefined' && completedMissionIds) return completedMissionIds;
+    }catch(e){}
+    return window.completedMissionIds || null;
+  }
+
+  function syncGlobalProgressState(){
+    const v = getVisitedSet();
+    if(v) window.visitedIds = v;
+    const m = getMissionSet();
+    if(m) window.completedMissionIds = m;
+  }
+
+  function popGameBadge(){
+    const badge = document.getElementById('game-nav-badge');
+    if(!badge) return;
+    badge.classList.remove('is-pop');
+    void badge.offsetWidth;
+    badge.classList.add('is-pop');
+  }
+
+  function syncGameNavBadgeFixed(){
+    syncGlobalProgressState();
+    const badge = document.getElementById('game-nav-badge');
+    if(!badge) return;
+    const v = getVisitedSet();
+    const count = v ? v.size : 0;
+    badge.textContent = String(count);
+  }
+
+  function launchStampBurst(loc){
+    const name = loc && loc.title_ko ? loc.title_ko : '관광지';
+    const old = document.getElementById('stamp-burst-fx');
+    if(old) old.remove();
+
+    const wrap = document.createElement('div');
+    wrap.id = 'stamp-burst-fx';
+    wrap.className = 'stamp-burst';
+    wrap.innerHTML = '<div class="stamp-burst-mark">VISIT</div><div class="stamp-burst-text">📮 ' + name + ' 방문 완료!</div>';
+    document.body.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 950);
+  }
+
+  function patchProgressHooks(){
+    syncGlobalProgressState();
+
+    if(typeof window.syncGameNavBadge === 'function'){
+      window.syncGameNavBadge = syncGameNavBadgeFixed;
+    }
+    syncGameNavBadgeFixed();
+
+    if(typeof window.onMarkerClick === 'function' && !window.__visitPatchApplied){
+      const originalOnMarkerClick = window.onMarkerClick;
+      window.onMarkerClick = async function(loc){
+        syncGlobalProgressState();
+        const before = getVisitedSet() ? getVisitedSet().size : 0;
+        const result = await originalOnMarkerClick.apply(this, arguments);
+        syncGlobalProgressState();
+        const after = getVisitedSet() ? getVisitedSet().size : 0;
+        syncGameNavBadgeFixed();
+        if(after > before){
+          popGameBadge();
+          launchStampBurst(loc);
+        }
+        return result;
+      };
+      window.__visitPatchApplied = true;
+    }
+
+    if(typeof window.resetVisited === 'function' && !window.__resetPatchApplied){
+      const originalResetVisited = window.resetVisited;
+      window.resetVisited = function(){
+        const result = originalResetVisited.apply(this, arguments);
+        syncGlobalProgressState();
+        syncGameNavBadgeFixed();
+        return result;
+      };
+      window.__resetPatchApplied = true;
+    }
+
+    if(typeof window.updateVisitCounter === 'function' && !window.__counterPatchApplied){
+      const originalUpdateVisitCounter = window.updateVisitCounter;
+      window.updateVisitCounter = function(){
+        const result = originalUpdateVisitCounter.apply(this, arguments);
+        syncGlobalProgressState();
+        syncGameNavBadgeFixed();
+        return result;
+      };
+      window.__counterPatchApplied = true;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    patchProgressHooks();
+    setTimeout(patchProgressHooks, 300);
+    setTimeout(patchProgressHooks, 1000);
+    setInterval(syncGlobalProgressState, 1200);
+    setInterval(syncGameNavBadgeFixed, 1200);
+  });
+})();
 </script>
 
 </body>
