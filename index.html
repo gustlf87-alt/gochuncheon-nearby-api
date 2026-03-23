@@ -2884,6 +2884,93 @@ body{
 }
 </style>
 
+
+<style>
+/* v12 mission flow redesign */
+.learning-tags-box{display:none !important;}
+.learning-mission-box{
+  padding:16px !important;
+}
+.learning-mission-kicker{
+  margin-bottom:10px !important;
+}
+.learning-mission-title{
+  margin-bottom:8px !important;
+  font-size:13px !important;
+}
+.learning-mission-copy{
+  margin-bottom:10px !important;
+}
+.learning-mission-flow{
+  display:grid;
+  gap:8px;
+  margin-top:8px;
+}
+.learning-mission-step{
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:8px;
+  align-items:start;
+  padding:10px 10px 9px;
+  border-radius:14px;
+  border:2px solid rgba(26,26,46,.12);
+  background:rgba(255,255,255,.58);
+}
+.learning-mission-step.no-quiz{
+  opacity:.72;
+}
+.learning-mission-step-icon{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:#1a1a2e;
+  color:#ffe8a3;
+  font-size:14px;
+  box-shadow:2px 2px 0 rgba(26,26,46,.14);
+}
+.learning-mission-step-body{
+  min-width:0;
+}
+.learning-mission-step-label{
+  display:block;
+  margin-bottom:3px;
+  color:#5a3a08;
+  font:700 11px/1.2 var(--ko);
+}
+.learning-mission-step-text{
+  display:block;
+  color:#5d4a2b;
+  font:500 12px/1.6 var(--ko);
+}
+.learning-mission-status{
+  margin-top:10px !important;
+}
+.learning-mission-status.ready{
+  background:#eef7f4;
+  color:#155a4a;
+  border-color:rgba(21,90,74,.18);
+}
+@media (max-width:700px){
+  .learning-mission-step{
+    grid-template-columns:24px 1fr;
+    gap:7px;
+    padding:9px;
+  }
+  .learning-mission-step-icon{
+    width:24px;height:24px;font-size:12px;
+  }
+  .learning-mission-step-label{
+    font-size:10px;
+  }
+  .learning-mission-step-text{
+    font-size:11px;
+  }
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -7992,6 +8079,131 @@ function closeGcAlert(event){
   document.addEventListener('DOMContentLoaded', function(){
     patchStartJourneyGuard();
     setTimeout(patchStartJourneyGuard, 300);
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  function makeMissionObserveText(loc, detail){
+    const item = Array.isArray(detail.curriculum_links) && detail.curriculum_links[0]
+      ? detail.curriculum_links[0]
+      : (Array.isArray(detail.learning_points) && detail.learning_points[1] ? detail.learning_points[1] : '');
+    if(item) return item;
+    return `${loc.title_ko}에서 보이는 특징을 하나 찾아보세요.`;
+  }
+
+  function makeMissionHintText(loc, detail){
+    const item = Array.isArray(detail.learning_points) && detail.learning_points[0]
+      ? detail.learning_points[0]
+      : detail.summary;
+    return item || `${loc.title_ko}의 특징을 먼저 하나 기억해보세요.`;
+  }
+
+  function renderBetterMissionFlow(loc){
+    if(!loc) return;
+    const box = document.getElementById('learning-mission-box');
+    const titleEl = document.getElementById('learning-mission-title');
+    const copyEl = document.getElementById('learning-mission-copy');
+    const statusEl = document.getElementById('learning-mission-status');
+    if(!box || !titleEl || !copyEl || !statusEl) return;
+
+    const detail = (typeof getLearningDetail === 'function') ? getLearningDetail(loc) : {};
+    const qEl = document.getElementById('learning-quiz-q');
+    const quizText = qEl ? String(qEl.textContent || '').trim() : '';
+    const done = (typeof hasLearningMissionDone === 'function') ? hasLearningMissionDone(loc.id) : false;
+
+    titleEl.textContent = `${loc.title_ko} 미션`;
+    copyEl.textContent = done
+      ? '힌트를 보고, 현장에서 살펴보고, 퀴즈까지 완료했어요!'
+      : '힌트 → 관찰 → 퀴즈 순서로 이 장소를 더 분명하게 이해해보세요.';
+
+    let flow = box.querySelector('.learning-mission-flow');
+    if(!flow){
+      flow = document.createElement('div');
+      flow.className = 'learning-mission-flow';
+      statusEl.before(flow);
+    }
+
+    const hintText = makeMissionHintText(loc, detail);
+    const observeText = makeMissionObserveText(loc, detail);
+    const quizLine = quizText || '아래 퀴즈를 풀어보세요.';
+    const completeText = done
+      ? '퀴즈 정답까지 완료! 이 장소 미션 성공'
+      : '퀴즈를 맞히면 이 장소 미션이 완료돼요.';
+
+    flow.innerHTML = `
+      <div class="learning-mission-step">
+        <div class="learning-mission-step-icon">💡</div>
+        <div class="learning-mission-step-body">
+          <strong class="learning-mission-step-label">힌트</strong>
+          <span class="learning-mission-step-text">${hintText}</span>
+        </div>
+      </div>
+      <div class="learning-mission-step">
+        <div class="learning-mission-step-icon">👀</div>
+        <div class="learning-mission-step-body">
+          <strong class="learning-mission-step-label">관찰</strong>
+          <span class="learning-mission-step-text">${observeText}</span>
+        </div>
+      </div>
+      <div class="learning-mission-step ${quizText ? '' : 'no-quiz'}">
+        <div class="learning-mission-step-icon">❓</div>
+        <div class="learning-mission-step-body">
+          <strong class="learning-mission-step-label">퀴즈</strong>
+          <span class="learning-mission-step-text">${quizLine}</span>
+        </div>
+      </div>
+      <div class="learning-mission-step">
+        <div class="learning-mission-step-icon">${done ? '✅' : '🏁'}</div>
+        <div class="learning-mission-step-body">
+          <strong class="learning-mission-step-label">완료</strong>
+          <span class="learning-mission-step-text">${completeText}</span>
+        </div>
+      </div>
+    `;
+
+    statusEl.classList.remove('done','ready');
+    if(done){
+      statusEl.textContent = '미션 완료 ✔';
+      statusEl.classList.add('done');
+    }else{
+      statusEl.textContent = '도전 가능';
+      statusEl.classList.add('ready');
+    }
+  }
+
+  if(typeof window.renderLearningPanel === 'function' && !window.__betterMissionFlowApplied){
+    const originalRenderLearningPanel = window.renderLearningPanel;
+    window.renderLearningPanel = function(loc){
+      const result = originalRenderLearningPanel.apply(this, arguments);
+      renderBetterMissionFlow(loc);
+      return result;
+    };
+    window.__betterMissionFlowApplied = true;
+  }
+
+  if(typeof window.renderLocationMissionBox === 'function' && !window.__betterMissionBoxApplied){
+    window.renderLocationMissionBox = function(loc){
+      renderBetterMissionFlow(loc);
+    };
+    window.__betterMissionBoxApplied = true;
+  }
+
+  if(typeof window.markLearningMissionComplete === 'function' && !window.__betterMissionCompleteApplied){
+    const originalMarkLearningMissionComplete = window.markLearningMissionComplete;
+    window.markLearningMissionComplete = function(loc){
+      const result = originalMarkLearningMissionComplete.apply(this, arguments);
+      renderBetterMissionFlow(loc);
+      return result;
+    };
+    window.__betterMissionCompleteApplied = true;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const titleEl = document.querySelector('#learning-quiz-wrap .learning-quiz-title');
+    if(titleEl) titleEl.textContent = '퀴즈 도전';
   });
 })();
 </script>
