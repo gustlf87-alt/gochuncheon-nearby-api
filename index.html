@@ -2380,9 +2380,9 @@ body{
       <button class="mobile-filter-chip" type="button" data-filter="역사" onclick="mobileSetFilter('역사')">역사</button>
       <button class="mobile-filter-chip" type="button" data-filter="문화" onclick="mobileSetFilter('문화')">문화</button>
     </div>
-    <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🧭 추천 코스</button>
+    <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🗺 나만의 여행 만들기</button>
   </div>
-  <div class="mobile-menu-note">지도 필터와 추천 코스를 확인할 수 있어요.</div>
+  <div class="mobile-menu-note">지도 필터와 🗺 나만의 여행 만들기를 확인할 수 있어요.</div>
 
 </div>
 
@@ -2437,7 +2437,7 @@ body{
       <button class="filter-chip" type="button" data-filter="역사">역사</button>
       <button class="filter-chip" type="button" data-filter="문화">문화</button>
     </div>
-    <button class="px-btn sm toolbar-btn" type="button" onclick="openCoursePanel()">🧭 추천 코스</button>
+    <button class="px-btn sm toolbar-btn" type="button" onclick="openCoursePanel()">🗺 나만의 여행 만들기</button>
     <div class="zoom-chip" id="zoom-chip">확대 <span id="zoom-text">100%</span></div>
   </div>
 
@@ -2499,7 +2499,7 @@ body{
       <div class="modal-tabs">
         <button class="modal-tab active" type="button" data-tab="info" onclick="switchModalTab('info')">정보·학습</button>
         <button class="modal-tab" type="button" data-tab="nearby" onclick="switchModalTab('nearby')">주변맛집</button>
-        <button class="modal-tab" type="button" data-tab="chatbot" onclick="switchModalTab('chatbot'); initInlineChatbot()">🤖AI챗봇</button>
+        <button class="modal-tab" type="button" data-tab="chatbot" onclick="switchModalTab('chatbot'); initInlineChatbot()">🤖 춘천쌤</button>
       </div>
       <div class="modal-panel active" id="modal-panel-info">
         <div class="modal-area-row">
@@ -2534,8 +2534,8 @@ body{
             <section class="learning-integrated-section" aria-label="정보와 학습 콘텐츠">
               <div class="learning-hero-card">
                 <div class="learning-section-header">
-                  <h3 class="learning-section-title">한 번에 보고 바로 이해하는 탐방 가이드</h3>
-                  <p class="learning-section-desc">관광지 핵심 정보와 현장에서 바로 연결되는 학습 포인트를 보기 쉽게 정리했어요.</p>
+                  <h3 class="learning-section-title">가기 전에 한 번에 보는 춘천 예습</h3>
+                  <p class="learning-section-desc">방문 전에 꼭 알아두면 현장에서 더 재미있게 볼 수 있는 포인트를 담았어요.</p>
                 </div>
                 <div class="learning-summary" id="learning-summary"></div>
               </div>
@@ -2545,17 +2545,17 @@ body{
 
                   <div class="learning-card-grid">
                     <div class="learning-box learning-points-box">
-                      <div class="learning-box-title">탐험미션</div>
+                      <div class="learning-box-title">가기 전에 보면 좋은 것</div>
                       <ul class="learning-list" id="learning-points"></ul>
                     </div>
                     <div class="learning-box learning-curriculum-box">
-                      <div class="learning-box-title">교과연계</div>
+                      <div class="learning-box-title">현장에서 볼 포인트</div>
                       <ul class="learning-list" id="learning-curriculum"></ul>
                     </div>
                   </div>
 
                   <div class="learning-box learning-tags-box">
-                    <div class="learning-box-title">핵심키워드</div>
+                    <div class="learning-box-title">미리 기억해둘 키워드</div>
                     <div class="learning-tags" id="learning-tags"></div>
                   </div>
                 </div>
@@ -2564,8 +2564,8 @@ body{
                   <div class="learning-quiz" id="learning-quiz-wrap">
                     <div class="learning-quiz-head">
                       <div>
-                        <div class="learning-quiz-title">체험 퀴즈</div>
-                        <p class="learning-quiz-copy">읽은 내용을 바로 확인해볼 수 있어요.</p>
+                        <div class="learning-quiz-title">미리 도전!</div>
+                        <p class="learning-quiz-copy">문제를 먼저 보고, 답은 현장에서 직접 찾아보세요.</p>
                       </div>
                     </div>
                     <div class="learning-quiz-q" id="learning-quiz-q"></div>
@@ -2623,8 +2623,8 @@ body{
 
 <div id="course-overlay" class="course-overlay hidden" onclick="closeCoursePanel(event)">
   <div class="course-box">
-    <div class="course-title">추천 코스</div>
-    <div class="course-sub">춘천 추천 코스를 골라보세요. 시작하면 지도에서 해당 관광지가 강조돼요.</div>
+    <div class="course-title">🗺 나만의 여행 만들기</div>
+    <div class="course-sub">춘천 🗺 나만의 여행 만들기를 골라보세요. 시작하면 지도에서 해당 관광지가 강조돼요.</div>
     <div class="course-grid" id="course-grid"></div>
     <div class="course-actions" style="justify-content:flex-end;margin-top:14px;">
       <button class="px-btn sm teal" type="button" onclick="clearCourseHighlight(); closeCoursePanel()">하이라이트 해제</button>
@@ -2638,7 +2638,7 @@ body{
 <div id="profile-overlay" class="ai-overlay hidden" onclick="closeProfileOverlay(event)">
   <div class="ai-box ai-profile-box">
     <div class="ai-profile-head">
-      <div class="ai-title">✨ AI 맞춤 코스 추천</div>
+      <div class="ai-title">✨ 나만의 여행 만들기</div>
       <div class="ai-sub">나에게 딱 맞는 춘천 코스를 찾아드릴게요!<br>아래 항목을 선택해 주세요 🧭</div>
     </div>
 
@@ -2670,7 +2670,7 @@ body{
 
     <div class="ai-actions ai-profile-actions">
       <button class="px-btn sm" type="button" onclick="goToCharSelect()">← 캐릭터 다시 선택</button>
-      <button class="px-btn sm aiai" type="button" onclick="runProfileAnalysis()">🤖 AI 코스 추천받기</button>
+      <button class="px-btn sm aiai" type="button" onclick="runProfileAnalysis()">🗺 여행 코스 추천받기</button>
     </div>
   </div>
 </div>
@@ -2678,7 +2678,7 @@ body{
 <div id="recommend-overlay" class="ai-overlay hidden" onclick="closeRecommendOverlay(event)">
   <div class="ai-box ai-result-box-wrap">
     <div class="ai-result-paper">
-      <div class="ai-result-top-badge" id="ai-result-badge">🤖 AI 맞춤 추천</div>
+      <div class="ai-result-top-badge" id="ai-result-badge">🗺 나만의 여행 추천</div>
       <div class="ai-result-title" id="ai-result-title">초등 저학년 맞춤 춘천 마스터 코스</div>
       <div class="ai-result-sub" id="ai-result-summary"></div>
       <div class="ai-result-reason" id="ai-result-reason"></div>
@@ -2688,7 +2688,7 @@ body{
         <div class="ai-result-tip-text" id="ai-result-note"></div>
       </div>
       <div class="ai-actions ai-result-actions">
-        <button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()">추천코스 확인하기</button>
+        <button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()">🗺 여행 코스 확인하기</button>
         <button class="px-btn sm" type="button" onclick="openProfileOverlay(); closeRecommendOverlay();">다시 추천받기</button>
         <button class="px-btn sm" type="button" onclick="closeRecommendOverlay()">직접 지도탐험</button>
       </div>
@@ -5041,7 +5041,7 @@ function buildAiRecommendation(){
       : topInterestObjects.some(item => item && item.id === 'nature')
         ? '자연을 볼 때는 색, 소리, 바람 느낌을 함께 말해보면 아이가 더 오래 기억해요.'
         : '아이에게 가장 기억에 남은 장소를 하나 고르게 하고 이유를 말하게 해보면 학습 효과가 더 좋아져요.';
-  return { id:'ai-custom', title, summary, reason, note:tip, spots, interests:interestLabels, badge:`🤖 AI 맞춤 추천 · ${ageLabel}` };
+  return { id:'ai-custom', title, summary, reason, note:tip, spots, interests:interestLabels, badge:`🗺 나만의 여행 추천 · ${ageLabel}` };
 }
 function renderAiRecommendation(){
   aiRecommendation = buildAiRecommendation();
@@ -5082,7 +5082,7 @@ function applyAiRecommendedCourse(){
   const first = LOCATIONS.find(loc => loc.id === aiRecommendation.spots[0]);
   if(first && typeof centerPanOnPercent === 'function') centerPanOnPercent(first.marker_x, first.marker_y);
   closeRecommendOverlay();
-  showToast('🤖 AI 추천 코스를 지도에 표시했어요!');
+  showToast('🤖 AI 🗺 나만의 여행 만들기를 지도에 표시했어요!');
 }
 function skipProfileAnalysis(){
   closeProfileOverlay();
@@ -7094,6 +7094,56 @@ function playSound(type){
     };
   }
 })();
+</script>
+
+
+<style>
+/* === NEW PRE-LEARNING UI === */
+.prelearn-section{padding:16px;background:#f7fbfa;border-radius:12px;margin-top:12px}
+.prelearn-title{font-weight:700;font-size:16px;margin-bottom:8px}
+.prelearn-card{background:#fff;border:1px solid #e3efec;border-radius:10px;padding:10px;margin-bottom:8px}
+.prelearn-quiz{background:#eef7f4;border:1px dashed #bfe0d6;padding:10px;border-radius:10px;margin-top:8px}
+.prelearn-mission{background:#fff7e6;border:1px solid #ffe0a3;padding:10px;border-radius:10px;margin-top:8px}
+.ready-badge{display:inline-block;background:#3aa17e;color:#fff;padding:6px 10px;border-radius:20px;font-size:12px;margin-top:10px}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+
+  // rename tab text
+  document.querySelectorAll(".tab-btn").forEach(btn=>{
+    if(btn.innerText.includes("정보")) btn.innerText="👀 먼저 알아보기";
+    if(btn.innerText.includes("학습")) btn.innerText="🎯 가기 전에 알아두기";
+  });
+
+  // inject pre-learning UI into modal content
+  document.querySelectorAll(".modal-content").forEach(box=>{
+    const section = document.createElement("div");
+    section.className="prelearn-section";
+    section.innerHTML = `
+      <div class="prelearn-title">🎯 가기 전에 알아두기</div>
+      <div class="prelearn-card">이 장소에서 꼭 봐야할 포인트를 미리 확인해보세요.</div>
+      <div class="prelearn-quiz">❓ 미리 퀴즈: 현장에서 답을 찾아보세요!</div>
+      <div class="prelearn-mission">📍 현장 미션: 가서 직접 확인해보세요!</div>
+      <div class="ready-badge">탐험 준비 완료!</div>
+    `;
+    box.appendChild(section);
+  });
+
+});
+</script>
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var intro = document.getElementById('inline-chat-intro-text');
+  if(intro) intro.textContent = '춘천쌤에게 이 장소를 가기 전에 알면 좋은 점을 물어보세요!';
+  var input = document.getElementById('inline-chat-input');
+  if(input) input.placeholder = '춘천쌤에게 궁금한 점을 입력하세요...';
+});
 </script>
 
 </body>
