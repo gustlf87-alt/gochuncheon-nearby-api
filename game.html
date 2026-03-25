@@ -112,7 +112,7 @@ button,a,input{font-family:inherit}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 #screen-character{background:linear-gradient(160deg,#16213e 0%,#1b2f28 100%);padding:20px}
-.char-title{font-size:clamp(22px,4vw,36px);color:var(--gold);text-shadow:2px 2px 0 var(--gold-dk);margin-bottom:10px;text-align:center}
+.char-title{font-size:clamp(18px,4vw,36px);color:var(--gold);text-shadow:2px 2px 0 var(--gold-dk);margin-bottom:10px;text-align:center}
 .char-subtitle{font-size:clamp(16px,2.6vw,24px);color:var(--sky);margin-bottom:28px;text-align:center;font-family:var(--ko)}
 .char-grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
 .char-card{width:170px;background:var(--night2);border:var(--border);box-shadow:var(--shadow);padding:16px 12px;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:transform .1s,box-shadow .1s}
@@ -2224,6 +2224,167 @@ body{
     min-height:70vh;
   }
 }
+
+/* custom traveler builder */
+#screen-character{
+  overflow-y:auto;
+  align-items:flex-start;
+  justify-content:flex-start;
+  max-height:100dvh;
+  -webkit-overflow-scrolling:touch;
+}
+.customizer-wrap{
+  width:min(100%, 820px);
+  margin:0 auto 18px;
+  display:grid;
+  grid-template-columns:minmax(220px,280px) minmax(0,1fr);
+  gap:16px;
+  align-items:start;
+}
+.customizer-preview-card,
+.customizer-panel{
+  background:rgba(26,26,46,.9);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  border-radius:14px;
+  padding:14px;
+}
+.customizer-preview-head,
+.customizer-label,
+.customizer-preview-sub,
+.customizer-preview-name,
+.customizer-name-input,
+.customizer-choice,
+.mobile-menu-player,
+.mobile-menu-player *{
+  font-size:12px !important;
+}
+.customizer-preview-canvas-wrap{
+  min-height:100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px 0 2px;
+}
+#customizer-preview{width:68px;height:100px;image-rendering:pixelated;}
+.customizer-preview-name{
+  color:var(--gold);
+  text-align:center;
+  font-family:var(--ko);
+}
+.customizer-preview-sub{
+  color:#d6dceb;
+  text-align:center;
+  line-height:1.6;
+  margin-top:6px;
+}
+.customizer-section{margin-bottom:14px;}
+.customizer-label{
+  display:block;
+  color:var(--gold);
+  margin-bottom:6px;
+  font-family:var(--ko);
+}
+.customizer-name-input{
+  width:100%;
+  border:2px solid rgba(255,255,255,.16);
+  background:#0f1727;
+  color:#fff;
+  border-radius:10px;
+  padding:10px 12px;
+  outline:none;
+  box-sizing:border-box;
+  font-family:var(--ko);
+}
+.customizer-name-input:focus{border-color:var(--gold);}
+.customizer-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.customizer-choice{
+  min-width:56px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.16);
+  background:#10192d;
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  cursor:pointer;
+  font-family:var(--ko);
+}
+.customizer-choice.active{
+  border-color:var(--gold);
+  box-shadow:0 0 0 2px rgba(232,169,34,.18) inset;
+}
+.customizer-swatch{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.45);
+  flex:0 0 auto;
+}
+.mobile-menu-player{
+  color:#dfe8ff;
+  margin-top:4px;
+  line-height:1.5;
+}
+.mobile-menu-player strong{
+  color:var(--gold);
+  margin-right:4px;
+}
+.completion-avatar-wrap{
+  display:flex;
+  justify-content:center;
+  margin:2px 0 10px;
+}
+#completion-avatar{
+  width:72px;
+  height:102px;
+  image-rendering:pixelated;
+}
+@media (max-width:700px){
+  .customizer-wrap{
+    grid-template-columns:1fr;
+    width:min(100%, 420px);
+    gap:12px;
+  }
+  #screen-character{
+    padding:50px 12px;
+  }
+}
+
+
+/* v3 customizer fix */
+#screen-character{overflow-y:auto;max-height:90vh;-webkit-overflow-scrolling:touch;}
+.customizer-options{display:flex !important;flex-wrap:wrap !important;gap:8px !important;min-height:36px;}
+.customizer-choice{appearance:none;border:none;outline:none;}
+.customizer-preview-card,.customizer-panel{display:block !important;}
+
+
+/* v4 bug fix */
+#screen-character .customizer-choice span{pointer-events:none;}
+
+
+/* v5 color picker fix */
+.customizer-choice{
+  cursor:pointer;
+  min-width:84px;
+}
+.customizer-choice.active{
+  transform:translateY(-1px);
+  box-shadow:0 0 0 2px rgba(255,255,255,.22) inset, 0 8px 18px rgba(0,0,0,.22);
+}
+.customizer-preview-sub{
+  font-size:12px !important;
+  line-height:1.45;
+  text-align:center;
+  color:#d7f4ff;
+}
+
 </style>
 <!--/스타일-->
 
@@ -3368,6 +3529,30 @@ img, canvas {
 }
 </style>
 
+
+<style id="custom-final-fixes">
+/* final fixes */
+#mobile-menu-player-banner{
+  margin:8px 0 12px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);
+}
+#mobile-menu-player-banner strong{
+  display:block;
+  font-size:14px;
+  line-height:1.4;
+}
+#mobile-menu-player-msg{
+  font-size:12px !important;
+  color:#dff6ff;
+}
+#game-bottom-nav{
+  z-index:9998 !important;
+}
+</style>
+
 </head>
 <body class="scanlines">
 
@@ -3385,6 +3570,12 @@ img, canvas {
   <div class="mobile-menu-head">
     <div class="mobile-menu-title">MENU</div>
   </div>
+  
+  <div class="mobile-menu-player" id="mobile-menu-player-banner">
+    <strong><span id="mobile-menu-player-name">춘천 탐험가</span>님</strong>
+    <div class="mobile-menu-note" id="mobile-menu-player-msg" style="margin-top:6px;">춘천여행 화이팅! ✨</div>
+  </div>
+
   <div class="mobile-menu-actions">
     <button class="px-btn sm" type="button" onclick="mobileGoHome()">홈화면</button>
     <button class="px-btn sm cherry" type="button" onclick="mobileResetJourney()">리셋하기</button>
@@ -3436,11 +3627,58 @@ img, canvas {
 </div>
 
 <div id="screen-character" class="screen hidden">
-  <div class="char-title">CHOOSE YOUR TRAVELER</div>
-  <div class="char-subtitle">누구와 함께 춘천으로 떠나볼까요? 😽</div>
-  <div class="char-grid" id="char-grid"></div>
-  <button class="px-btn" id="btn-start-journey" onclick="startJourney()" style="opacity:1;pointer-events:auto; font-size:16px;padding:14px 32px; font-weight:bold;">춘천여행시작 →</button>
-  <div class="helper-line">실제 지도와 조금 다를 수 있어요 :) 모바일에서는 지도를 손으로 움직여보세요!</div>
+  <div class="char-title">MY TRAVELER</div>
+  <div class="char-subtitle">이름과 아바타를 만들고 춘천여행을 시작해볼까요? ✨</div>
+
+  <div class="customizer-wrap">
+    <div class="customizer-preview-card">
+      <div class="customizer-preview-canvas-wrap">
+        <canvas id="customizer-preview" class="pixel-sprite" aria-label="캐릭터 미리보기" width="88" height="124"></canvas>
+      </div>
+      <div class="customizer-preview-name" id="customizer-preview-name">춘천 탐험가</div>
+      <div class="customizer-preview-sub">아바트를 꾸며보세요 😀</div>
+    </div>
+
+    <div class="customizer-panel">
+      <div class="customizer-section">
+        <label class="customizer-label" for="player-name-input">이름</label>
+        <input type="text" id="player-name-input" class="customizer-name-input" maxlength="12" placeholder="이름을 입력하세요" />
+      </div>
+
+      <div class="customizer-section">
+        <div class="customizer-label">얼굴색상</div>
+        <div class="customizer-options" id="skin-tone-options">
+<button type="button" class="customizer-choice" data-key="skinTone" data-value="beige"><span class="customizer-swatch" style="background:#f5d0b5"></span><span>베이지</span></button>
+<button type="button" class="customizer-choice" data-key="skinTone" data-value="tan"><span class="customizer-swatch" style="background:#c98c63"></span><span>갈색</span></button>
+<button type="button" class="customizer-choice" data-key="skinTone" data-value="deepbeige"><span class="customizer-swatch" style="background:#b97a56"></span><span>진한베이지</span></button>
+</div>
+      </div>
+
+      <div class="customizer-section">
+        <div class="customizer-label">머리색상</div>
+        <div class="customizer-options" id="hair-color-options">
+<button type="button" class="customizer-choice" data-key="hairColor" data-value="black"><span class="customizer-swatch" style="background:#2a1d1a"></span><span>검정</span></button>
+<button type="button" class="customizer-choice" data-key="hairColor" data-value="brown"><span class="customizer-swatch" style="background:#5d3420"></span><span>갈색</span></button>
+<button type="button" class="customizer-choice" data-key="hairColor" data-value="wine"><span class="customizer-swatch" style="background:#6d2f4a"></span><span>와인</span></button>
+</div>
+      </div>
+
+      <div class="customizer-section">
+        <div class="customizer-label">티셔츠색상</div>
+        <div class="customizer-options" id="top-color-options">
+<button type="button" class="customizer-choice" data-key="topColor" data-value="red"><span class="customizer-swatch" style="background:#d85757"></span><span>빨강</span></button>
+<button type="button" class="customizer-choice" data-key="topColor" data-value="yellow"><span class="customizer-swatch" style="background:#e7b63f"></span><span>노랑</span></button>
+<button type="button" class="customizer-choice" data-key="topColor" data-value="green"><span class="customizer-swatch" style="background:#4a9d68"></span><span>초록</span></button>
+<button type="button" class="customizer-choice" data-key="topColor" data-value="blue"><span class="customizer-swatch" style="background:#4d7ed6"></span><span>파랑</span></button>
+<button type="button" class="customizer-choice" data-key="topColor" data-value="pink"><span class="customizer-swatch" style="background:#dc7fb2"></span><span>핑크</span></button>
+<button type="button" class="customizer-choice" data-key="topColor" data-value="purple"><span class="customizer-swatch" style="background:#8064d4"></span><span>보라</span></button>
+</div>
+      </div>
+
+      <button class="px-btn" id="btn-start-journey" onclick="startJourney()" style="opacity:1;pointer-events:auto; font-size:12px;padding:12px 22px; font-weight:bold; width:100%;">춘천여행시작 →</button>
+      <div class="helper-line">이름과 캐릭터를 저장한 뒤 여행을 시작해요 :)</div>
+    </div>
+  </div>
 </div>
 
 <div id="screen-map" class="screen hidden">
@@ -3743,7 +3981,7 @@ img, canvas {
     <div class="completion-cert">
       <div class="completion-kicker">GOCHUNCHEON EDUCATIONAL TOURISM CERTIFICATE</div><div class="completion-award-line">CERTIFICATE OF EXPLORATION</div>
      
-      <div class="completion-title">춘천 탐험 인증서</div><div class="completion-nameplate">고춘천 플레이어 님</div>
+      <div class="completion-title">춘천 탐험 인증서</div><div class="completion-nameplate" id="completion-nameplate">고춘천 플레이어 님</div><div class="completion-avatar-wrap"><canvas id="completion-avatar" class="pixel-sprite" aria-label="인증서 캐릭터"></canvas></div>
       <div class="completion-sub"><strong>Go춘천</strong>에서 춘천 주요 관광지 25곳 탐험과 학습 미션을 모두 완료하여 <strong>춘천 탐험가</strong>로 인증합니다.</div>
 
       <div class="completion-meta-grid">
@@ -3771,7 +4009,7 @@ img, canvas {
       <div class="completion-sign">
         <div>
           <div class="label">Explorer</div>
-          <div class="value">고춘천 플레이어</div>
+          <div class="value" id="completion-explorer-name">고춘천 플레이어</div>
         </div>
         <div>
           <div class="label">Service Type</div>
@@ -6677,13 +6915,65 @@ LOCATIONS.forEach(loc => {
   loc.lng = loc.lng ?? null;
 });
 
-const CHARACTERS = [
-  { id:'c1', name:'HYUNSIL', nameKo:'현실', desc:'모험가', palette:['#f5c9a0','#3a1a0a','#c83b3b','#1a1a2e','#e8a922','#3a2a1a'], emoji:'🎒' },
 
-  { id:'c2', name:'DUBU', nameKo:'두부', desc:'강아지 ', palette:['#ffffff','#e8e8e8','#ffffff','#1a1a2e','#ffb6c1','#cccccc'], emoji:'🐶' },
-
-  { id:'c3', name:'SEOWOO', nameKo:'서우', desc:'미식가', palette:['#f5c9a0','#8b3a8b','#e87f2a','#1a1a2e','#e8a922','#c8a060'], emoji:'🍜' }
-];
+const CHARACTERS = [];
+const CHARACTER_STORAGE_KEY = 'gochuncheon_character_profile_v2';
+const CUSTOMIZER_OPTIONS = {
+  skinTone: [
+    { id:'beige', label:'베이지', color:'#f5d0b5' },
+    { id:'tan', label:'갈색', color:'#c98c63' },
+    { id:'deepbeige', label:'진한베이지', color:'#b97a56' }
+  ],
+  hairColor: [
+    { id:'black', label:'검정', color:'#2a1d1a' },
+    { id:'brown', label:'갈색', color:'#5d3420' },
+    { id:'wine', label:'와인', color:'#6d2f4a' }
+  ],
+  topColor: [
+    { id:'red', label:'빨강', color:'#d85757' },
+    { id:'yellow', label:'노랑', color:'#e7b63f' },
+    { id:'green', label:'초록', color:'#4a9d68' },
+    { id:'blue', label:'파랑', color:'#4d7ed6' },
+    { id:'pink', label:'핑크', color:'#dc7fb2' },
+    { id:'purple', label:'보라', color:'#8064d4' }
+  ]
+};
+const DEFAULT_CHARACTER_PROFILE = {
+  id:'custom',
+  name:'춘천 탐험가',
+  nameKo:'춘천 탐험가',
+  skinTone:'beige',
+  hairColor:'black',
+  topColor:'red',
+  bottomColor:'#1a1a2e'
+};
+function getCustomizerOption(group, id){
+  return (CUSTOMIZER_OPTIONS[group] || []).find(function(item){ return item.id === id; }) || (CUSTOMIZER_OPTIONS[group] || [])[0];
+}
+function makeCharacterPalette(profile){
+  const skin = getCustomizerOption('skinTone', profile.skinTone);
+  const hair = getCustomizerOption('hairColor', profile.hairColor);
+  const top = getCustomizerOption('topColor', profile.topColor);
+  return [skin ? skin.color : '#f5d0b5', hair ? hair.color : '#2a1d1a', top ? top.color : '#d85757', '#1a1a2e', '#e8a922', profile.bottomColor || '#1a1a2e'];
+}
+function sanitizeCharacterProfile(raw){
+  const profile = Object.assign({}, DEFAULT_CHARACTER_PROFILE, raw || {});
+  profile.name = String(profile.name || DEFAULT_CHARACTER_PROFILE.name).trim() || DEFAULT_CHARACTER_PROFILE.name;
+  profile.nameKo = profile.name;
+  profile.skinTone = getCustomizerOption('skinTone', profile.skinTone).id;
+  profile.hairColor = getCustomizerOption('hairColor', profile.hairColor).id;
+  profile.topColor = getCustomizerOption('topColor', profile.topColor).id;
+  profile.palette = makeCharacterPalette(profile);
+  return profile;
+}
+function loadCharacterProfile(){
+  try{
+    return sanitizeCharacterProfile(JSON.parse(safeGetItem(CHARACTER_STORAGE_KEY) || 'null'));
+  }catch(e){
+    return sanitizeCharacterProfile(DEFAULT_CHARACTER_PROFILE);
+  }
+}
+let selectedChar = loadCharacterProfile();
 
 const ROUTE_NODES = {
   center:{x:50,y:47},
@@ -6723,7 +7013,6 @@ const LOCATION_ROUTE_HINTS = {
   21:'southHub', 22:'southWest', 23:'northHub', 24:'southVillage', 25:'northHub'
 };
 
-let selectedChar = null;
 let visitedIds = new Set(JSON.parse(safeGetItem('gochuncheon_visited') || '[]'));
 let moving = false;
 let completionShown = false;
@@ -6957,40 +7246,110 @@ function initTitle(){
     starsEl.appendChild(s);
   }
   const preview=document.getElementById('title-preview');
-  preview.innerHTML='';
-  CHARACTERS.forEach(char=>{
+  if(preview){
+    preview.innerHTML='';
     const wrap=document.createElement('div');
-    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.9;';
-    const cvs=document.createElement('canvas'); cvs.className='pixel-sprite'; drawCharacter(cvs,char.palette,2.2);
-    const lbl=document.createElement('div'); lbl.style.cssText='font-size:14px;color:#4aa8bc;font-family:var(--ko);'; lbl.textContent=char.nameKo;
+    wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.95;';
+    const cvs=document.createElement('canvas'); cvs.className='pixel-sprite'; drawCharacter(cvs,selectedChar.palette,2.4);
+    const lbl=document.createElement('div'); lbl.style.cssText='font-size:14px;color:#4aa8bc;font-family:var(--ko);'; lbl.textContent=selectedChar.name || '춘천 탐험가';
     wrap.append(cvs,lbl); preview.appendChild(wrap);
+  }
+}
+
+function renderCustomizerChoiceGroup(containerId, key){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = '';
+  (CUSTOMIZER_OPTIONS[key] || []).forEach(function(option){
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'customizer-choice' + (selectedChar[key] === option.id ? ' active' : '');
+    btn.innerHTML = '<span class="customizer-swatch" style="background:'+option.color+'"></span><span>'+option.label+'</span>';
+    btn.setAttribute('data-key', key); btn.setAttribute('data-value', option.id); btn.onclick = function(){ updateSelectedCharacter(key, option.id); };
+    container.appendChild(btn);
   });
 }
 
-function initCharSelect(){
-  const grid=document.getElementById('char-grid');
-  grid.innerHTML='';
-  CHARACTERS.forEach(char=>{
-    const card=document.createElement('div');
-    card.className='char-card'; card.id='card-'+char.id;
-    const emoji=document.createElement('div'); emoji.style.cssText='font-size:20px;margin-bottom:8px;'; emoji.textContent=char.emoji;
-    const spriteWrap=document.createElement('div'); spriteWrap.className='char-sprite-wrap';
-    const cvs=document.createElement('canvas'); cvs.className='pixel-sprite'; drawCharacter(cvs,char.palette,4); spriteWrap.appendChild(cvs);
-    const name=document.createElement('div'); name.className='char-name'; name.textContent=char.name;
-    const nameKo=document.createElement('div'); nameKo.className='char-name-ko'; nameKo.textContent=char.nameKo;
-    const desc=document.createElement('div'); desc.className='char-desc'; desc.textContent=char.desc;
-    card.append(emoji,spriteWrap,name,nameKo,desc);
-    card.onclick=()=>selectChar(char.id);
-    grid.appendChild(card);
-  });
+function updateCustomizerPreview(){
+  selectedChar = sanitizeCharacterProfile(selectedChar);
+  const input = document.getElementById('player-name-input');
+  const previewName = document.getElementById('customizer-preview-name');
+  const previewMeta = document.getElementById('customizer-preview-meta');
+  const menuName = document.getElementById('mobile-menu-player-name');
+  const completionName = document.getElementById('completion-nameplate');
+  const explorerName = document.getElementById('completion-explorer-name');
+  const previewCanvas = document.getElementById('customizer-preview');
+  const completionCanvas = document.getElementById('completion-avatar');
+
+  if(input && input.value !== selectedChar.name) input.value = selectedChar.name;
+  if(previewName) previewName.textContent = selectedChar.name;
+  if(menuName) menuName.textContent = selectedChar.name;
+  if(completionName) completionName.textContent = selectedChar.name + '님';
+  if(explorerName) explorerName.textContent = selectedChar.name;
+
+  const skin = getCustomizerOption('skinTone', selectedChar.skinTone);
+  const hair = getCustomizerOption('hairColor', selectedChar.hairColor);
+  const top = getCustomizerOption('topColor', selectedChar.topColor);
+  if(previewMeta){
+    previewMeta.textContent = '얼굴: ' + (skin ? skin.label : '-') + ' · 머리: ' + (hair ? hair.label : '-') + ' · 티셔츠: ' + (top ? top.label : '-');
+  }
+
+  if(previewCanvas) drawCharacter(previewCanvas, selectedChar.palette, 4);
+  if(completionCanvas) drawCharacter(completionCanvas, selectedChar.palette, 3);
+
+  const titlePreview = document.getElementById('title-preview');
+  if(titlePreview && !document.getElementById('screen-title')?.classList.contains('hidden')) initTitle();
 }
+function saveCharacterProfile(){
+  const activeChar = getActiveCharacter();
+  safeSetItem(CHARACTER_STORAGE_KEY, JSON.stringify(activeChar));
+}
+function updateSelectedCharacter(key, value){
+  selectedChar[key] = value;
+  selectedChar = sanitizeCharacterProfile(selectedChar);
+  saveCharacterProfile();
+  renderCustomizerChoiceGroup('skin-tone-options','skinTone');
+  renderCustomizerChoiceGroup('hair-color-options','hairColor');
+  renderCustomizerChoiceGroup('top-color-options','topColor');
+  updateCustomizerPreview();
+}
+function initCharSelect(){
+  selectedChar = loadCharacterProfile();
+
+  const input = document.getElementById('player-name-input');
+  if(input){
+    input.value = selectedChar.name || '';
+    input.oninput = function(){
+      selectedChar.name = this.value.trim() || DEFAULT_CHARACTER_PROFILE.name;
+      selectedChar.nameKo = selectedChar.name;
+      selectedChar = sanitizeCharacterProfile(selectedChar);
+      saveCharacterProfile();
+      updateCustomizerPreview();
+    };
+  }
+
+  renderCustomizerChoiceGroup('skin-tone-options','skinTone');
+  renderCustomizerChoiceGroup('hair-color-options','hairColor');
+  renderCustomizerChoiceGroup('top-color-options','topColor');
+
+  document.querySelectorAll('#screen-character .customizer-choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const key = this.getAttribute('data-key');
+      const value = this.getAttribute('data-value');
+      if(key && value){
+        updateSelectedCharacter(key, value);
+      }
+    });
+  });
+
+  updateCustomizerPreview();
+}
+
+window.updateSelectedCharacter = updateSelectedCharacter;
+window.initCharSelect = initCharSelect;
 
 function selectChar(id){
-  selectedChar = CHARACTERS.find(c=>c.id===id);
-  document.querySelectorAll('.char-card').forEach(c=>c.classList.remove('selected'));
-  document.getElementById('card-'+id).classList.add('selected');
-  const btn=document.getElementById('btn-start-journey');
-  btn.style.opacity='1'; btn.style.pointerEvents='auto';
+  return selectedChar;
 }
 
 function applyVisitedStyle(el){
@@ -7156,10 +7515,18 @@ function updateCompletionSummary(){
   const visitEl = document.getElementById('completion-visit-rate');
   const quizEl = document.getElementById('completion-quiz-rate');
   const focusEl = document.getElementById('completion-learning-focus');
+  const completionName = document.getElementById('completion-nameplate');
+  const explorerName = document.getElementById('completion-explorer-name');
+  const menuName = document.getElementById('mobile-menu-player-name');
   if(visitEl) visitEl.textContent = `${visitedIds.size} / ${LOCATIONS.length}곳 완료`;
   const rate = quizStats.answered ? Math.round((quizStats.correct / quizStats.answered) * 100) : 0;
   if(quizEl) quizEl.textContent = `${rate}% (${quizStats.correct}/${quizStats.answered})`;
   if(focusEl) focusEl.textContent = visitedIds.size >= LOCATIONS.length ? '춘천 역사·문화·관광 이해' : '관광지 탐험 진행 중';
+  if(completionName) completionName.textContent = `${selectedChar?.name || '고춘천 플레이어'}님`;
+  if(explorerName) explorerName.textContent = selectedChar?.name || '고춘천 플레이어';
+  if(menuName) menuName.textContent = selectedChar?.name || '춘천 탐험가';
+  const completionCanvas = document.getElementById('completion-avatar');
+  if(completionCanvas && selectedChar?.palette) drawCharacter(completionCanvas, selectedChar.palette, 3);
 }
 
 function playCompletionFanfare(){
@@ -7348,6 +7715,7 @@ function initMap(){
   });
 
   updateVisitCounter();
+  updateCustomizerPreview();
   document.getElementById('total-count').textContent = LOCATIONS.length;
   syncQuestHud();
   initToolbar();
@@ -7515,13 +7883,9 @@ function goToTitle(){
 }
 function goToCharSelect(){
   toggleMobileMenu(false);
-  initCharSelect();
   showScreen('screen-character');
-  if(!selectedChar && CHARACTERS && CHARACTERS.length){
-    selectChar(CHARACTERS[0].id);
-  }else if(selectedChar){
-    selectChar(selectedChar.id);
-  }
+  initCharSelect();
+  setTimeout(initCharSelect, 0);
   const btn=document.getElementById('btn-start-journey');
   if(btn){ btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
 }
@@ -7529,13 +7893,13 @@ function startJourney(){
   toggleMobileMenu(false);
   initSound();
   try{
-    if(!selectedChar && CHARACTERS && CHARACTERS.length){
-      selectChar(CHARACTERS[0].id);
-    }
-    if(!selectedChar){
-      alert('캐릭터를 불러오지 못했어요. 다시 시도해주세요.');
+    selectedChar = loadCharacterProfile();
+    const name = (selectedChar.name || '').trim();
+    if(!name){
+      alert('이름을 입력해주세요.');
       return;
     }
+    updateCustomizerPreview();
     initMap();
     showScreen('screen-map');
     openProfileOverlay();
@@ -7550,6 +7914,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); clo
 bindModalTabEvents();
 renderProfileOptions();
 initTitle();
+window.addEventListener('load', function(){ try{ initCharSelect(); }catch(e){ console.error(e); } });
 if(visitedIds.size >= LOCATIONS.length){
   completionShown = true;
   updateCompletionSummary();
@@ -9491,6 +9856,676 @@ document.addEventListener('DOMContentLoaded', function(){
       bindCourseModalDrag();
     });
     observer.observe(document.body, { childList:true, subtree:true });
+  });
+})();
+</script>
+
+
+<script>
+/* final customizer event fix */
+(function(){
+  function syncSelectedChar(){
+    try{
+      if(typeof selectedChar !== 'undefined'){
+        window.selectedChar = selectedChar;
+      }
+    }catch(e){}
+  }
+
+  const _origUpdate = (typeof updateSelectedCharacter === 'function') ? updateSelectedCharacter : null;
+  if(_origUpdate){
+    window.updateSelectedCharacter = function(key, value){
+      _origUpdate(key, value);
+      syncSelectedChar();
+      try{ updateCustomizerPreview(); }catch(e){ console.error(e); }
+    };
+  }
+
+  const _origInit = (typeof initCharSelect === 'function') ? initCharSelect : null;
+  if(_origInit){
+    window.initCharSelect = function(){
+      _origInit();
+      syncSelectedChar();
+    };
+  }
+
+  const _origGoToCharSelect = (typeof goToCharSelect === 'function') ? goToCharSelect : null;
+  window.goToCharSelect = function(){
+    try{
+      toggleMobileMenu(false);
+    }catch(e){}
+    try{
+      if(_origInit){ _origInit(); }
+      else if(typeof initCharSelect === 'function'){ initCharSelect(); }
+    }catch(e){ console.error(e); }
+    try{
+      showScreen('screen-character');
+    }catch(e){
+      var s1 = document.getElementById('screen-title');
+      var s2 = document.getElementById('screen-character');
+      if(s1) s1.classList.add('hidden');
+      if(s2) s2.classList.remove('hidden');
+    }
+    const btn = document.getElementById('btn-start-journey');
+    if(btn){
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    }
+    syncSelectedChar();
+  };
+
+  const _origStartJourney = (typeof startJourney === 'function') ? startJourney : null;
+  window.startJourney = function(){
+    try{
+      if(typeof selectedChar === 'undefined' || !selectedChar){
+        if(typeof loadCharacterProfile === 'function') selectedChar = loadCharacterProfile();
+      }
+      if(typeof sanitizeCharacterProfile === 'function') selectedChar = sanitizeCharacterProfile(selectedChar);
+      syncSelectedChar();
+
+      var input = document.getElementById('player-name-input');
+      var currentName = '';
+      if(input){
+        currentName = (input.value || '').trim();
+      }
+      if(!currentName && selectedChar && selectedChar.name){
+        currentName = String(selectedChar.name).trim();
+      }
+      if(!currentName){
+        alert('이름을 입력해주세요.');
+        return;
+      }
+
+      selectedChar.name = currentName;
+      selectedChar.nameKo = currentName;
+      if(typeof sanitizeCharacterProfile === 'function') selectedChar = sanitizeCharacterProfile(selectedChar);
+      if(typeof saveCharacterProfile === 'function') saveCharacterProfile();
+      if(typeof updateCustomizerPreview === 'function') updateCustomizerPreview();
+
+      try{ initSound(); }catch(e){}
+      try{ if(typeof initMap === 'function') initMap(); }catch(e){ console.error(e); }
+      try{ showScreen('screen-map'); }catch(e){
+        var sc = document.getElementById('screen-character');
+        var sm = document.getElementById('screen-map');
+        if(sc) sc.classList.add('hidden');
+        if(sm) sm.classList.remove('hidden');
+      }
+      try{ if(typeof openProfileOverlay === 'function') openProfileOverlay(); }catch(e){}
+      syncSelectedChar();
+    }catch(err){
+      console.error(err);
+      alert('시작 중 오류가 발생했어요. 콘솔을 확인해주세요.');
+    }
+  };
+
+  function bindCustomizerEvents(){
+    const screen = document.getElementById('screen-character');
+    if(!screen) return;
+
+    screen.querySelectorAll('.customizer-choice').forEach(function(btn){
+      btn.onclick = function(e){
+        e.preventDefault();
+        const key = this.getAttribute('data-key');
+        const value = this.getAttribute('data-value');
+        if(key && value && typeof window.updateSelectedCharacter === 'function'){
+          window.updateSelectedCharacter(key, value);
+        }
+      };
+    });
+
+    const nameInput = document.getElementById('player-name-input');
+    if(nameInput){
+      nameInput.oninput = function(){
+        try{
+          if(typeof selectedChar === 'undefined' || !selectedChar){
+            if(typeof loadCharacterProfile === 'function') selectedChar = loadCharacterProfile();
+          }
+          selectedChar.name = (this.value || '').trim() || '춘천 탐험가';
+          selectedChar.nameKo = selectedChar.name;
+          if(typeof sanitizeCharacterProfile === 'function') selectedChar = sanitizeCharacterProfile(selectedChar);
+          if(typeof saveCharacterProfile === 'function') saveCharacterProfile();
+          if(typeof updateCustomizerPreview === 'function') updateCustomizerPreview();
+          syncSelectedChar();
+        }catch(e){ console.error(e); }
+      };
+    }
+
+    const startBtn = document.getElementById('btn-start-journey');
+    if(startBtn){
+      startBtn.onclick = function(e){
+        e.preventDefault();
+        window.startJourney();
+      };
+    }
+  }
+
+  window.addEventListener('load', function(){
+    try{
+      if(typeof window.initCharSelect === 'function') window.initCharSelect();
+    }catch(e){ console.error(e); }
+    bindCustomizerEvents();
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    bindCustomizerEvents();
+    const titleStartBtn = document.querySelector('#screen-title .px-btn');
+    if(titleStartBtn){
+      titleStartBtn.onclick = function(e){
+        e.preventDefault();
+        window.goToCharSelect();
+      };
+    }
+  });
+})();
+</script>
+
+
+<script>
+/* hard override: custom traveler controls */
+(function(){
+  const STORAGE_KEY = 'gochuncheon_character_profile_v2';
+  const OPTIONS = {
+    skinTone: [
+      { id:'beige', label:'베이지', color:'#f5d0b5' },
+      { id:'tan', label:'갈색', color:'#c98c63' },
+      { id:'deepbeige', label:'진한베이지', color:'#b97a56' }
+    ],
+    hairColor: [
+      { id:'black', label:'검정', color:'#2a1d1a' },
+      { id:'brown', label:'갈색', color:'#5d3420' },
+      { id:'wine', label:'와인', color:'#6d2f4a' }
+    ],
+    topColor: [
+      { id:'red', label:'빨강', color:'#d85757' },
+      { id:'yellow', label:'노랑', color:'#e7b63f' },
+      { id:'green', label:'초록', color:'#4a9d68' },
+      { id:'blue', label:'파랑', color:'#4d7ed6' },
+      { id:'pink', label:'핑크', color:'#dc7fb2' },
+      { id:'purple', label:'보라', color:'#8064d4' }
+    ]
+  };
+
+  function getOpt(key, id){
+    const list = OPTIONS[key] || [];
+    return list.find(function(v){ return v.id === id; }) || list[0];
+  }
+
+  function makeState(raw){
+    raw = raw || {};
+    const state = {
+      id: 'custom',
+      name: String(raw.name || '춘천 탐험가').trim() || '춘천 탐험가',
+      nameKo: String(raw.name || '춘천 탐험가').trim() || '춘천 탐험가',
+      skinTone: getOpt('skinTone', raw.skinTone || 'beige').id,
+      hairColor: getOpt('hairColor', raw.hairColor || 'black').id,
+      topColor: getOpt('topColor', raw.topColor || 'red').id,
+      bottomColor: '#1a1a2e'
+    };
+    state.palette = [
+      getOpt('skinTone', state.skinTone).color,
+      getOpt('hairColor', state.hairColor).color,
+      getOpt('topColor', state.topColor).color,
+      '#1a1a2e',
+      '#e8a922',
+      '#1a1a2e'
+    ];
+    return state;
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return makeState(raw ? JSON.parse(raw) : null);
+    }catch(e){
+      return makeState();
+    }
+  }
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(window.__goState));
+    }catch(e){}
+  }
+
+  function ensureState(){
+    window.__goState = makeState(window.__goState || loadState());
+    window.selectedChar = window.__goState;
+    return window.__goState;
+  }
+
+  function syncChoiceUI(){
+    const state = ensureState();
+    document.querySelectorAll('#screen-character .customizer-choice').forEach(function(btn){
+      const key = btn.getAttribute('data-key');
+      const value = btn.getAttribute('data-value');
+      btn.classList.toggle('active', !!key && state[key] === value);
+    });
+  }
+
+  function renderState(){
+    const state = ensureState();
+
+    const input = document.getElementById('player-name-input');
+    if(input && document.activeElement !== input) input.value = state.name;
+
+    const previewName = document.getElementById('customizer-preview-name');
+    if(previewName) previewName.textContent = state.name;
+
+    //let previewMeta = document.getElementById('customizer-preview-meta');
+    //if(!previewMeta){
+    //  const holder = document.querySelector('#screen-character .customizer-preview-card');
+    //  if(holder){
+    //    previewMeta = document.createElement('div');
+    //    previewMeta.id = 'customizer-preview-meta';
+    //    previewMeta.className = 'customizer-preview-sub';
+    //    holder.appendChild(previewMeta);
+    //  }
+    //}
+    //if(previewMeta){
+    //  previewMeta.textContent = '얼굴: ' + getOpt('skinTone', state.skinTone).label + ' · 머리: ' + getOpt('hairColor', state.hairColor).label + ' · 티셔츠: ' + getOpt('topColor', state.topColor).label;
+    //}
+
+    const menuName = document.getElementById('mobile-menu-player-name') || document.getElementById('player-menu-name');
+    if(menuName) menuName.textContent = state.name;
+
+    const completionName = document.getElementById('completion-nameplate');
+    if(completionName) completionName.textContent = state.name + '님';
+
+    const explorerName = document.getElementById('completion-explorer-name');
+    if(explorerName) explorerName.textContent = state.name;
+
+    if(typeof drawCharacter === 'function'){
+      const previewCanvas = document.getElementById('customizer-preview');
+      if(previewCanvas) drawCharacter(previewCanvas, state.palette, 4);
+
+      const completionCanvas = document.getElementById('completion-avatar');
+      if(completionCanvas) drawCharacter(completionCanvas, state.palette, 3);
+
+      const titlePreview = document.getElementById('title-preview');
+      if(titlePreview){
+        titlePreview.innerHTML = '';
+        const c = document.createElement('canvas');
+        c.className = 'pixel-sprite';
+        drawCharacter(c, state.palette, 2.8);
+        titlePreview.appendChild(c);
+      }
+
+      const mapCharCanvas = document.querySelector('#map-char canvas, #map-char-canvas');
+      if(mapCharCanvas) drawCharacter(mapCharCanvas, state.palette, 3);
+    }
+
+    syncChoiceUI();
+    saveState();
+  }
+
+  function choose(key, value){
+    const state = ensureState();
+    state[key] = value;
+    window.__goState = makeState(state);
+    window.selectedChar = window.__goState;
+    renderState();
+  }
+
+  function bindCustomizer(){
+    ensureState();
+
+    const screen = document.getElementById('screen-character');
+    if(!screen) return;
+
+    screen.querySelectorAll('.customizer-choice').forEach(function(btn){
+      btn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        const key = btn.getAttribute('data-key');
+        const value = btn.getAttribute('data-value');
+        if(key && value) choose(key, value);
+        return false;
+      };
+    });
+
+    const input = document.getElementById('player-name-input');
+    if(input){
+      input.oninput = function(){
+        const state = ensureState();
+        state.name = (this.value || '').trim() || '춘천 탐험가';
+        state.nameKo = state.name;
+        window.__goState = makeState(state);
+        window.selectedChar = window.__goState;
+        renderState();
+      };
+      input.onchange = input.oninput;
+    }
+
+    const startBtn = document.getElementById('btn-start-journey');
+    if(startBtn){
+      startBtn.setAttribute('onclick', 'return false;');
+      startBtn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        customStartJourney();
+        return false;
+      };
+    }
+
+    renderState();
+  }
+
+  function customGoToCharSelect(){
+    try{ toggleMobileMenu(false); }catch(e){}
+    if(typeof showScreen === 'function') showScreen('screen-character');
+    else{
+      const a = document.getElementById('screen-title');
+      const b = document.getElementById('screen-character');
+      if(a) a.classList.add('hidden');
+      if(b) b.classList.remove('hidden');
+    }
+    bindCustomizer();
+    renderState();
+  }
+
+  function customStartJourney(){
+    const state = ensureState();
+    const input = document.getElementById('player-name-input');
+    const name = (input ? input.value : state.name || '').trim();
+    if(!name){
+      alert('이름을 입력해주세요.');
+      return false;
+    }
+    state.name = name;
+    state.nameKo = name;
+    window.__goState = makeState(state);
+    window.selectedChar = window.__goState;
+    saveState();
+    renderState();
+
+    try{ if(typeof initSound === 'function') initSound(); }catch(e){}
+    try{ if(typeof initMap === 'function') initMap(); }catch(e){ console.error(e); }
+    try{
+      if(typeof showScreen === 'function') showScreen('screen-map');
+      else{
+        const a = document.getElementById('screen-character');
+        const b = document.getElementById('screen-map');
+        if(a) a.classList.add('hidden');
+        if(b) b.classList.remove('hidden');
+      }
+    }catch(e){ console.error(e); }
+
+    try{
+      const mapCharCanvas = document.querySelector('#map-char canvas, #map-char-canvas');
+      if(mapCharCanvas && typeof drawCharacter === 'function') drawCharacter(mapCharCanvas, window.__goState.palette, 3);
+    }catch(e){}
+
+    try{ if(typeof openProfileOverlay === 'function') openProfileOverlay(); }catch(e){}
+    return false;
+  }
+
+  window.goToCharSelect = customGoToCharSelect;
+  window.startJourney = customStartJourney;
+  window.updateSelectedCharacter = choose;
+
+  window.addEventListener('load', function(){
+    ensureState();
+    bindCustomizer();
+    renderState();
+    const titleBtn = document.querySelector('#screen-title .px-btn');
+    if(titleBtn){
+      titleBtn.setAttribute('onclick', 'return false;');
+      titleBtn.onclick = function(e){
+        e.preventDefault();
+        customGoToCharSelect();
+        return false;
+      };
+    }
+  });
+})();
+</script>
+
+
+<script>
+/* final patch: remove old alert, restore bottom nav, show player name in menu */
+(function(){
+  const STORAGE_KEY = 'gochuncheon_character_profile_v2';
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function getPlayerName(){
+    const state = loadState();
+    const selected = window.selectedChar || {};
+    return (selected && (selected.nameKo || selected.name)) || state.name || '춘천 탐험가';
+  }
+
+  function syncPlayerBanner(){
+    const name = getPlayerName();
+    const nameEls = [
+      document.getElementById('mobile-menu-player-name'),
+      document.getElementById('player-menu-name')
+    ].filter(Boolean);
+    nameEls.forEach(function(el){ el.textContent = name; });
+
+    const msg = document.getElementById('mobile-menu-player-msg');
+    if(msg) msg.textContent = name + '님 춘천여행 화이팅! ✨';
+  }
+
+  function forceBottomNav(){
+    const nav = document.getElementById('game-bottom-nav');
+    const map = document.getElementById('screen-map');
+    const title = document.getElementById('screen-title');
+    const char = document.getElementById('screen-character');
+    if(!nav || !map) return;
+
+    const isMapVisible = !map.classList.contains('hidden');
+    const isTitleVisible = title && !title.classList.contains('hidden');
+    const isCharVisible = char && !char.classList.contains('hidden');
+
+    if(isMapVisible && !isTitleVisible && !isCharVisible){
+      nav.style.display = 'flex';
+      nav.style.visibility = 'visible';
+      nav.style.opacity = '1';
+      nav.classList.remove('hidden');
+    }else{
+      nav.style.display = 'none';
+    }
+  }
+
+  function hideGcAlert(){
+    const el = document.getElementById('gc-alert-overlay');
+    if(el) el.classList.add('hidden');
+  }
+
+  window.openGcAlert = function(){
+    hideGcAlert();
+    return false;
+  };
+  window.closeGcAlert = function(event){
+    hideGcAlert();
+    return false;
+  };
+
+  const oldStartJourney = window.startJourney;
+  window.startJourney = function(){
+    const input = document.getElementById('player-name-input');
+    const rawName = input ? (input.value || '').trim() : '';
+    const state = (window.__goState || window.selectedChar || loadState() || {});
+    const name = rawName || state.name || '춘천 탐험가';
+
+    if(!window.__goState){
+      window.__goState = state;
+    }
+    window.__goState.name = name;
+    window.__goState.nameKo = name;
+
+    if(typeof window.makeState === 'function'){
+      window.__goState = window.makeState(window.__goState);
+    }else{
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(window.__goState));
+      }catch(e){}
+    }
+    window.selectedChar = window.__goState;
+
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(window.__goState));
+    }catch(e){}
+
+    try{ if(typeof drawCharacter === 'function'){ 
+      const previewCanvas = document.getElementById('customizer-preview');
+      if(previewCanvas && window.__goState.palette) drawCharacter(previewCanvas, window.__goState.palette, 4);
+      const mapCharCanvas = document.querySelector('#map-char canvas, #map-char-canvas');
+      if(mapCharCanvas && window.__goState.palette) drawCharacter(mapCharCanvas, window.__goState.palette, 3);
+    }}catch(e){}
+
+    try{ if(typeof initSound === 'function') initSound(); }catch(e){}
+    try{ if(typeof initMap === 'function') initMap(); }catch(e){ console.error(e); }
+    try{
+      if(typeof showScreen === 'function') showScreen('screen-map');
+      else{
+        const a = document.getElementById('screen-character');
+        const b = document.getElementById('screen-map');
+        if(a) a.classList.add('hidden');
+        if(b) b.classList.remove('hidden');
+      }
+    }catch(e){ console.error(e); }
+
+    hideGcAlert();
+    syncPlayerBanner();
+    forceBottomNav();
+    setTimeout(forceBottomNav, 80);
+    setTimeout(forceBottomNav, 250);
+    return false;
+  };
+
+  const oldGoToCharSelect = window.goToCharSelect;
+  window.goToCharSelect = function(){
+    if(typeof oldGoToCharSelect === 'function'){
+      oldGoToCharSelect();
+    }else{
+      const a = document.getElementById('screen-title');
+      const b = document.getElementById('screen-character');
+      if(a) a.classList.add('hidden');
+      if(b) b.classList.remove('hidden');
+    }
+    hideGcAlert();
+    syncPlayerBanner();
+    forceBottomNav();
+  };
+
+  const oldToggleMobileMenu = window.toggleMobileMenu;
+  window.toggleMobileMenu = function(force){
+    if(typeof oldToggleMobileMenu === 'function'){
+      oldToggleMobileMenu(force);
+    }
+    syncPlayerBanner();
+  };
+
+  window.addEventListener('load', function(){
+    hideGcAlert();
+    syncPlayerBanner();
+    forceBottomNav();
+
+    const startBtn = document.getElementById('btn-start-journey');
+    if(startBtn){
+      startBtn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        window.startJourney();
+        return false;
+      };
+    }
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    if(menuBtn){
+      menuBtn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleMobileMenu(true);
+        syncPlayerBanner();
+        return false;
+      };
+    }
+
+    const floatingBtn = document.getElementById('floating-game-menu-btn');
+    if(floatingBtn){
+      floatingBtn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleMobileMenu(true);
+        syncPlayerBanner();
+        return false;
+      };
+    }
+
+    setInterval(function(){
+      hideGcAlert();
+      syncPlayerBanner();
+      forceBottomNav();
+    }, 1200);
+  });
+})();
+</script>
+
+
+<script>
+/* fix mobile menu close button after banner patch */
+(function(){
+  function closeMenu(){
+    try{
+      var panel = document.getElementById('mobile-menu-panel');
+      var overlay = document.getElementById('mobile-menu-overlay');
+      var body = document.body;
+      if(panel){
+        panel.classList.remove('open');
+        panel.classList.add('hidden');
+        panel.setAttribute('aria-hidden','true');
+        panel.style.transform = 'translateX(110%)';
+      }
+      if(overlay){
+        overlay.classList.remove('open');
+        overlay.classList.add('hidden');
+        overlay.setAttribute('aria-hidden','true');
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+      }
+      if(body){
+        body.classList.remove('menu-open','mobile-menu-open');
+      }
+      if(typeof window.toggleMobileMenu === 'function' && window.toggleMobileMenu !== closeMenu){
+        try{ window.__menuClosing = true; window.toggleMobileMenu(false); }catch(e){}
+        
+      }
+      return false;
+    }catch(e){
+      console.error(e);
+      return false;
+    }
+  }
+
+  window.closeMobileMenu = closeMenu;
+
+  window.addEventListener('load', function(){
+    var closeBtn = document.getElementById('mobile-menu-close');
+    if(closeBtn){
+      closeBtn.setAttribute('onclick', 'return false;');
+      closeBtn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        return closeMenu();
+      };
+    }
+
+    var overlay = document.getElementById('mobile-menu-overlay');
+    if(overlay){
+      overlay.onclick = function(e){
+        e.preventDefault();
+        return closeMenu();
+      };
+    }
   });
 })();
 </script>
