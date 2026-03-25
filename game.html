@@ -633,10 +633,7 @@ canvas.pixel-sprite{image-rendering:pixelated;display:block;background:transpare
   .mobile-menu-panel.open{transform:translateX(0);display:flex}
   .mobile-menu-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
   .mobile-menu-title{font-size:14px;color:var(--gold);font-family:var(--ko)}
-  .mobile-menu-close{
-    width:34px;height:34px;background:var(--cherry);color:var(--cream);
-    border:2px solid var(--cherry-dk);font-size:12px;box-shadow:2px 2px 0 #1a1a2e;
-  }
+  
  .mobile-menu-actions {
 	  display: flex;
 	  gap: 6px;              /* 버튼 사이 간격 */
@@ -651,7 +648,6 @@ canvas.pixel-sprite{image-rendering:pixelated;display:block;background:transpare
 	}
   .mobile-menu-note{
     font-size:12px;line-height:1.6;color:#d6e3f5;font-family:var(--ko);
-    background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.08);padding:10px 11px;
   }
 }
 
@@ -920,26 +916,7 @@ body{
 
 /* v39 mobile close button + toolbar navy background */
 @media (max-width:700px){
-  button.mobile-menu-close,
-  .mobile-menu-close{
-    width:34px !important;
-    height:34px !important;
-    min-width:34px !important;
-    min-height:34px !important;
-    padding:0 !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    background:var(--cherry) !important;
-    color:var(--cream) !important;
-    border:2px solid var(--cherry-dk) !important;
-    font-size:12px !important;
-    line-height:1 !important;
-    box-shadow:2px 2px 0 #1a1a2e !important;
-    appearance:none !important;
-    -webkit-appearance:none !important;
-    border-radius:0 !important;
-  }
+ 
 
   #map-toolbar,
   .map-toolbar{
@@ -1754,9 +1731,10 @@ body{
     pointer-events:auto !important;
     -webkit-appearance:none !important;
     appearance:none !important;
+	
   }
   body.show-floating-game-menu #floating-game-menu-btn{
-    display:flex !important;
+    display:none!important;
   }
   .mobile-menu-panel{
     z-index:100220 !important;
@@ -1772,13 +1750,10 @@ body{
   .mobile-menu-head .mobile-menu-close,
   .mobile-menu-close,
   button.mobile-menu-close{
-    position:absolute !important;
-    top:0 !important;
-    right:0 !important;
-    width:40px !important;
-    height:40px !important;
-    min-width:40px !important;
-    min-height:40px !important;
+    
+    width:100% !important;
+    height:30px !important;
+    min-height:30px !important;
     margin:0 !important;
     padding:0 !important;
     display:flex !important;
@@ -1789,7 +1764,8 @@ body{
     border:3px solid #7a2323 !important;
     box-shadow:2px 2px 0 #1a1a2e !important;
     border-radius:0 !important;
-    font-size:20px !important;
+    font-size:12px !important;
+	font-family:'mona12';
     font-weight:700 !important;
     line-height:1 !important;
     z-index:100230 !important;
@@ -2572,8 +2548,8 @@ body{
   }
 }
 @media (max-width:420px){
-  .mobile-goal-hud{left:max(8px, env(safe-area-inset-left));right:58px;min-height:38px;padding:6px 8px}
-  .mobile-goal-hud-title{font-size:9px}
+  .mobile-goal-hud{left:max(10px, env(safe-area-inset-left));right:10px;min-height:38px;padding:6px 8px}
+  .mobile-goal-hud-title{font-size:10px}
   .mobile-goal-hud-text{font-size:10px}
 }
 </style>
@@ -3569,11 +3545,12 @@ img, canvas {
 <div class="mobile-menu-panel" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-head">
     <div class="mobile-menu-title">MENU</div>
+    
   </div>
   
   <div class="mobile-menu-player" id="mobile-menu-player-banner">
     <strong><span id="mobile-menu-player-name">춘천 탐험가</span>님</strong>
-    <div class="mobile-menu-note" id="mobile-menu-player-msg" style="margin-top:6px;">춘천여행 화이팅! ✨</div>
+    <div class="mobile-menu-note"  style="margin-top:6px;">춘천여행 화이팅! ✨</div>
   </div>
 
   <div class="mobile-menu-actions">
@@ -3598,11 +3575,11 @@ img, canvas {
       <button class="mobile-filter-chip" type="button" data-filter="역사" onclick="mobileSetFilter('역사')">역사</button>
       <button class="mobile-filter-chip" type="button" data-filter="문화" onclick="mobileSetFilter('문화')">문화</button>
     </div>
-    <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🗺 나만의 여행 만들기</button>
+    <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🗺 춘천관광 추천코스</button>
     <button class="px-btn sm aiai mobile-course-btn" type="button" onclick="openGlobalChatFromMenu()">🤖 춘천쌤한테 질문하기</button>
   </div>
-  <div class="mobile-menu-note">지도 종류를 고르고, 나만의 여행도 만들어볼 수 있어요!</div>
-
+  <div class="mobile-menu-note">🤖 궁금한내용은 춘천쌤에게 질문해보세요 !<br/>💯 모든 관광지를 확인하면 상장을 받을 수 있어요 !</div>
+  <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="메뉴 닫기" onclick="toggleMobileMenu(false); return false;">X 닫기</button>
 </div>
 
 <div id="screen-title" class="screen">
@@ -3949,7 +3926,6 @@ img, canvas {
     </div>
 
     <div class="ai-actions ai-profile-actions">
-      <button class="px-btn sm" type="button" onclick="goToCharSelect()">← 캐릭터 다시 선택</button>
       <button class="px-btn sm aiai" type="button" onclick="runProfileAnalysis()">🗺 여행 코스 추천받기</button>
     </div>
   </div>
@@ -3959,7 +3935,7 @@ img, canvas {
   <div class="ai-box ai-result-box-wrap">
     <div class="ai-result-paper">
       <div class="ai-result-top-badge" id="ai-result-badge">🗺 나만의 여행 추천</div>
-      <div class="ai-result-title" id="ai-result-title">초등 저학년 맞춤 춘천 마스터 코스</div>
+      <div class="ai-result-title" id="ai-result-title">초등 저학년 맞춤 </div>
       <div class="ai-result-sub" id="ai-result-summary"></div>
       <div class="ai-result-reason" id="ai-result-reason"></div>
       <div class="ai-result-list styled" id="ai-result-list"></div>
@@ -3968,7 +3944,7 @@ img, canvas {
         <div class="ai-result-tip-text" id="ai-result-note"></div>
       </div>
       <div class="ai-actions ai-result-actions">
-        <button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()">🗺 여행 코스 확인하기</button>
+        <button class="px-btn sm teal" type="button" onclick="applyAiRecommendedCourse()" style="width:100%!important;">🗺 여행 코스 확인하기</button>
         <button class="px-btn sm" type="button" onclick="openProfileOverlay(); closeRecommendOverlay();">다시 추천받기</button>
         <button class="px-btn sm" type="button" onclick="closeRecommendOverlay()">직접 지도탐험</button>
       </div>
@@ -4100,14 +4076,21 @@ function syncViewportHeight(){
 function toggleMobileMenu(force){
   const menu = document.getElementById('mobileMenu');
   const backdrop = document.getElementById('mobile-menu-backdrop');
-  if(!menu || !backdrop) return;
+  const closeBtn = document.getElementById('mobile-menu-close');
+  if(!menu || !backdrop) return false;
   const open = typeof force === 'boolean' ? force : !menu.classList.contains('open');
   menu.classList.toggle('open', open);
   backdrop.classList.toggle('open', open);
   menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+  backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+  document.body.classList.toggle('mobile-menu-open', open);
+  if(closeBtn){
+    closeBtn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 닫기');
+  }
   if(open){
     syncMobileSearchInput();
   }
+  return false;
 }
 
 function syncMobileSearchInput(){
@@ -6376,7 +6359,7 @@ function buildAiRecommendation(){
   const primary = interestLabels[0] || '맞춤';
   const travelTimeLabel = PROFILE_OPTIONS.times.find(item => item.id === userProfile.travelTime)?.label || '하루 종일';
   const styleLabel = PROFILE_OPTIONS.styles.find(item => item.id === userProfile.style)?.label || '균형형';
-  const title = `${ageLabel} ${charLabel} 춘천 마스터 코스`;
+  const title = `${ageLabel} ${charLabel} 추천 코스`;
   const summary = `${primary}을 좋아하고 ${styleLabel} 여행을 선호하는 ${ageLabel}에게 딱 맞춘 ${travelTimeLabel} 코스예요!`;
   const reason = `${interestLabels.join(', ')} 성향과 체험 난이도, 장소 분위기를 함께 살펴서 지루하지 않게 섞어 추천했어요.`;
   const tip = topInterestObjects.some(item => item && item.id === 'puppet')
@@ -10476,28 +10459,26 @@ document.addEventListener('DOMContentLoaded', function(){
 (function(){
   function closeMenu(){
     try{
-      var panel = document.getElementById('mobile-menu-panel');
-      var overlay = document.getElementById('mobile-menu-overlay');
+      var panel = document.getElementById('mobileMenu');
+      var overlay = document.getElementById('mobile-menu-backdrop');
       var body = document.body;
-      if(panel){
-        panel.classList.remove('open');
-        panel.classList.add('hidden');
-        panel.setAttribute('aria-hidden','true');
-        panel.style.transform = 'translateX(110%)';
-      }
-      if(overlay){
-        overlay.classList.remove('open');
-        overlay.classList.add('hidden');
-        overlay.setAttribute('aria-hidden','true');
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-      }
-      if(body){
-        body.classList.remove('menu-open','mobile-menu-open');
-      }
       if(typeof window.toggleMobileMenu === 'function' && window.toggleMobileMenu !== closeMenu){
-        try{ window.__menuClosing = true; window.toggleMobileMenu(false); }catch(e){}
-        
+        try{ window.toggleMobileMenu(false); }catch(e){}
+      }else{
+        if(panel){
+          panel.classList.remove('open');
+          panel.setAttribute('aria-hidden','true');
+          panel.style.transform = '';
+        }
+        if(overlay){
+          overlay.classList.remove('open');
+          overlay.setAttribute('aria-hidden','true');
+          overlay.style.opacity = '';
+          overlay.style.pointerEvents = '';
+        }
+        if(body){
+          body.classList.remove('menu-open','mobile-menu-open');
+        }
       }
       return false;
     }catch(e){
@@ -10511,7 +10492,6 @@ document.addEventListener('DOMContentLoaded', function(){
   window.addEventListener('load', function(){
     var closeBtn = document.getElementById('mobile-menu-close');
     if(closeBtn){
-      closeBtn.setAttribute('onclick', 'return false;');
       closeBtn.onclick = function(e){
         e.preventDefault();
         e.stopPropagation();
