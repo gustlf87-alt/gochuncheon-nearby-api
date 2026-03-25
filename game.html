@@ -3358,8 +3358,9 @@ img, canvas {
   .course-preview{
     gap:5px !important;
 	overflow-x:scroll;
-	 scrollbar-width:thin;
-     -webkit-overflow-scrolling:touch;
+	scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+	display:none!important;
   }
   .course-preview-chip{
     max-width:150px !important;
@@ -8818,30 +8819,14 @@ if(typeof window.markLearningMissionComplete === 'function' && !window.__v30Rewa
 }
 </script>
 
+
+
+
 <script>
-/* v-global-chat overlay logic */
+/* ===== 전역 춘천쌤 챗봇 - 통교체 시작 ===== */
+
 let globalChatHistory = [];
 let globalChatTypingTimer = null;
-
-function appendGlobalChatMsg(role, htmlText, scrollNow){
-  const log = document.getElementById('global-chat-messages');
-  if(!log) return null;
-  const row = document.createElement('div');
-  row.className = 'inline-msg ' + role;
-  const bubble = document.createElement('div');
-  bubble.className = 'inline-msg-bubble';
-  bubble.innerHTML = htmlText;
-  const time = document.createElement('div');
-  time.className = 'inline-msg-time';
-  time.textContent = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
-  row.appendChild(bubble);
-  row.appendChild(time);
-  log.appendChild(row);
-  if(scrollNow !== false){
-    log.scrollTop = log.scrollHeight;
-  }
-  return bubble;
-}
 
 function runGlobalTypewriter(target, htmlText, onTick){
   if(!target) return;
@@ -8864,12 +8849,13 @@ function runGlobalTypewriter(target, htmlText, onTick){
     built += token;
     target.innerHTML = built;
     if(typeof onTick === 'function') onTick();
-  }, 35);
+  }, 28);
 }
 
 function appendGlobalTyping(){
   const el = document.getElementById('global-chat-messages');
   if(!el) return;
+  removeGlobalTyping();
   const d = document.createElement('div');
   d.className = 'inline-chat-typing';
   d.id = 'global-chat-typing';
@@ -8883,37 +8869,76 @@ function removeGlobalTyping(){
   if(el) el.remove();
 }
 
+function appendGlobalChatMsg(role, html, useTypewriter){
+  const log = document.getElementById('global-chat-messages');
+  if(!log) return null;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'inline-msg ' + (role === 'user' ? 'user' : 'bot');
+
+  const bubble = document.createElement('div');
+  bubble.className = 'inline-msg-bubble';
+
+  const time = document.createElement('div');
+  time.className = 'inline-msg-time';
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  time.textContent = hh + ':' + mm;
+
+  wrap.appendChild(bubble);
+  wrap.appendChild(time);
+  log.appendChild(wrap);
+  log.scrollTop = log.scrollHeight;
+
+  if(useTypewriter){
+    bubble.innerHTML = '';
+  }else{
+    bubble.innerHTML = html || '';
+  }
+  return bubble;
+}
+
 function renderGlobalChatPresets(){
   const wrap = document.getElementById('global-chat-quick');
   if(!wrap) return;
   const presets = [
-    '초등학생이 가기 좋은 춘천 코스 추천해줘',
+    '춘천 박물관 위주로 추천해줘',
     '비 오는 날 가기 좋은 실내 장소 알려줘',
-    '박물관이랑 체험 위주로 추천해줘',
-    '춘천에서 사진 찍기 좋은 곳 알려줘',
-    '아이랑 먹기 좋은 춘천 음식 알려줘'
+    '춘천 먹거리랑 같이 갈 곳 추천해줘'
   ];
   wrap.innerHTML = presets.map(function(text){
     return '<button class="inline-chat-quick-btn" type="button" data-global-question="' + text + '">' + text + '</button>';
   }).join('');
 }
 
-function initGlobalChatbot(){
+function initGlobalChatbot(forceReset){
   const log = document.getElementById('global-chat-messages');
   if(!log) return;
+
   renderGlobalChatPresets();
+
+  if(forceReset){
+    log.dataset.inited = '';
+  }
   if(log.dataset.inited === '1') return;
+
   log.dataset.inited = '1';
   log.innerHTML = '';
   globalChatHistory = [];
-  appendGlobalChatMsg('bot', '안녕! 나는 <strong>춘천 전체 여행</strong>을 도와주는 춘천쌤이야 😊<br>춘천에서 어디를 가면 좋을지, 아이랑 가기 좋은 곳은 어디인지 편하게 물어봐!', true);
+
+  appendGlobalChatMsg(
+    'bot',
+    '안녕! 나는 <strong>춘천 전체 여행</strong>을 도와주는 춘천쌤이야 😊<br>춘천 관광지, 박물관, 체험, 먹거리, 가족 코스까지 편하게 물어봐!',
+    false
+  );
 }
 
 function openGlobalChatOverlay(){
   const overlay = document.getElementById('global-chat-overlay');
   if(!overlay) return;
   overlay.classList.remove('hidden');
-  initGlobalChatbot();
+  initGlobalChatbot(false);
   setTimeout(function(){
     const input = document.getElementById('global-chat-input');
     if(input) input.focus();
@@ -8931,52 +8956,221 @@ function openGlobalChatFromMenu(){
   openGlobalChatOverlay();
 }
 
+function normalizeChatText(text){
+  return String(text || '')
+    .toLowerCase()
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/[\s"'`~!@#$%^&*()_\-+=|\\[\]{};:,.<>/?]/g, '');
+}
+
+function findLocationFromQuestion(question){
+  const q = normalizeChatText(question);
+  if(!q) return null;
+
+  let best = null;
+  let bestScore = 0;
+
+  for(const loc of LOCATIONS){
+    const names = [
+      loc.title_ko,
+      loc.title_en,
+      loc.slug
+    ].filter(Boolean);
+
+    let score = 0;
+
+    names.forEach(function(name){
+      const n = normalizeChatText(name);
+      if(!n) return;
+      if(q.includes(n)) score = Math.max(score, n.length);
+      if(n.includes(q) && q.length >= 2) score = Math.max(score, q.length - 1);
+    });
+
+    // 자주 쓰는 축약 / 별칭 보강
+    const aliases = [];
+    if(loc.title_ko === '춘천 애니메이션박물관') aliases.push('애니메이션박물관', '애니박물관');
+    if(loc.title_ko === '국립춘천박물관') aliases.push('춘천박물관', '국립박물관');
+    if(loc.title_ko === '남이섬') aliases.push('남이섬');
+    if(loc.title_ko === '레고랜드 코리아 리조트') aliases.push('레고랜드');
+    if(loc.title_ko === '소양강스카이워크') aliases.push('스카이워크');
+    if(loc.title_ko === '춘천 명동 닭갈비거리') aliases.push('닭갈비거리', '명동닭갈비거리');
+    if(loc.title_ko === '춘천막국수체험박물관') aliases.push('막국수박물관', '막국수체험');
+
+    aliases.forEach(function(alias){
+      const a = normalizeChatText(alias);
+      if(a && q.includes(a)) score = Math.max(score, a.length + 3);
+    });
+
+    if(score > bestScore){
+      bestScore = score;
+      best = loc;
+    }
+  }
+
+  return bestScore >= 2 ? best : null;
+}
+
+function buildGlobalSystemPrompt(matchedLoc){
+  const placeGuide = matchedLoc
+    ? `지금 사용자는 "${matchedLoc.title_ko}"에 대해 묻고 있어.
+장소 정보:
+- 이름: ${matchedLoc.title_ko}
+- 카테고리: ${matchedLoc.category || ''}
+- 설명: ${matchedLoc.description || ''}
+- 주소: ${matchedLoc.address || ''}`
+    : `지금 사용자는 춘천 전체 관광에 대해 묻고 있어.
+춘천의 관광지, 박물관, 체험, 음식, 가족 코스, 실내 장소 등을 폭넓게 안내해줘.`;
+
+  return `너는 고춘천(GoChuncheon)의 AI 여행 도우미 '춘천쌤'이야.
+${placeGuide}
+
+아래 규칙을 꼭 지켜.
+1. 사용자의 질문에 바로 답해. 자기소개나 안내 멘트로 시작하지 마.
+2. 질문과 상관없는 장소를 억지로 추천하지 마.
+3. 장소를 추천할 때는 실제 춘천 관광지 이름만 말해.
+4. 초등학생과 학부모도 이해하기 쉽게 쉬운 한국어로 2~4문장 안에서 답해.
+5. 장소 설명 질문이면 그 장소의 특징, 볼거리, 누구에게 좋은지 중심으로 답해.
+6. 추천 질문이면 조건에 맞는 장소 2~4곳을 이유와 함께 추천해.
+7. 모르면 지어내지 말고 솔직하게 말해.
+8. 절대 아래와 같은 문장을 답변으로 쓰지 마
+9. 질문이 비교이면 두 장소를 비교해서 장단점을 간단히 설명해줘:
+   - "안녕, 나는 춘천쌤이야"
+   - "궁금한 질문을 보내주면"
+   - "장소 이름이나 질문을 말해줘"
+   - "무엇이든 물어보세요"`;
+}
+
+function extractReplyFromResponse(data){
+  if(!data) return '';
+
+  if(typeof data === 'string') return data.trim();
+
+  const candidates = [
+    data.reply,
+    data.answer,
+    data.output_text,
+    data.message,
+    data.text,
+    data.content
+  ];
+
+  for(const item of candidates){
+    if(typeof item === 'string' && item.trim()) return item.trim();
+  }
+
+  if(Array.isArray(data.choices) && data.choices.length){
+    const c0 = data.choices[0];
+    if(c0){
+      if(typeof c0.text === 'string' && c0.text.trim()) return c0.text.trim();
+      if(c0.message && typeof c0.message.content === 'string' && c0.message.content.trim()){
+        return c0.message.content.trim();
+      }
+    }
+  }
+
+  return '';
+}
+
+function isBadGlobalReply(reply){
+  const text = String(reply || '').trim();
+  if(!text) return true;
+
+  const blockedPhrases = [
+    '안녕, 나는 춘천쌤이야',
+    '궁금한 질문을 보내주면',
+    '장소 이름이나 질문을 말해줘',
+    '무엇이든 물어보세요',
+    '바로 쉽게 알려줄게',
+    '짧고 재미있게 답해줄 수 있어'
+  ];
+
+  return blockedPhrases.some(function(phrase){
+    return text.includes(phrase);
+  });
+}
+
+function buildEmergencyReply(userMsg, matchedLoc){
+  const q = normalizeChatText(userMsg);
+
+  if(matchedLoc){
+    return `${matchedLoc.title_ko}은(는) 춘천에서 가볼 만한 대표 ${matchedLoc.category || '관광'} 장소야 😊<br>${matchedLoc.description || '볼거리와 체험 포인트가 있어서 가족과 함께 둘러보기 좋아.'}<br>원하면 이곳의 주변 맛집이나 비슷한 장소도 같이 추천해줄게!`;
+  }
+
+  if(q.includes('박물관')){
+    return '춘천에서 박물관을 찾는다면 애니메이션박물관, 국립춘천박물관, 춘천인형극박물관을 추천해 😊<br>아이들과 함께라면 애니메이션박물관이 특히 재미있고, 역사와 문화를 보고 싶다면 국립춘천박물관도 좋아!';
+  }
+
+  if(q.includes('체험') || q.includes('아이') || q.includes('어린이')){
+    return '아이와 함께 체험하기 좋은 곳으로는 레고랜드, 김유정레일바이크, 애니메이션박물관이 있어 🎒<br>직접 보고 움직이는 요소가 있어서 가족 여행 코스로 잘 어울려!';
+  }
+
+  if(q.includes('먹') || q.includes('맛집') || q.includes('음식')){
+    return '춘천에서는 닭갈비와 막국수가 가장 유명해 🍜<br>명동 닭갈비거리나 낭만시장 쪽을 함께 둘러보면 먹거리랑 여행을 같이 즐기기 좋아!';
+  }
+
+  return '지금 춘천쌤 답변 연결이 잠깐 헷갈렸어 😥<br>질문을 한 번만 더 보내주면 더 정확하게 도와줄게!';
+}
+
 async function sendGlobalChatMessage(quickText){
   const inputEl = document.getElementById('global-chat-input');
   const userMsg = quickText || (inputEl ? inputEl.value.trim() : '');
   if(!userMsg) return;
   if(inputEl) inputEl.value = '';
 
-  appendGlobalChatMsg('user', userMsg, true);
+  appendGlobalChatMsg('user', userMsg, false);
   appendGlobalTyping();
   globalChatHistory.push({ role:'user', content:userMsg });
 
-  const systemPrompt = `너는 고춘천(GoChuncheon)의 전체 여행 도우미 AI '춘천쌤'이야.
-춘천 여행, 교육 관광, 아이와 함께 가기 좋은 장소, 박물관, 체험, 추천 코스, 먹거리 등을 쉽고 친근하게 안내해줘.
-답변은 유초등 아이와 학부모가 보기 쉽게 3~5문장으로 짧게 작성하고, 줄바꿈을 써서 읽기 편하게 해줘.
-가능하면 장소 이름을 2~4곳 정도 구체적으로 넣고, 너무 딱딱하지 않게 설명해줘. 이모지 1~2개는 허용해.`;
+  const matchedLoc = findLocationFromQuestion(userMsg);
+  const systemPrompt = buildGlobalSystemPrompt(matchedLoc);
+
+  let reply = '';
 
   try{
     const resp = await fetch('https://gochuncheon-nearby-api.vercel.app/api/chat', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        place: null,
+        place: matchedLoc ? {
+          id: matchedLoc.id,
+          title_ko: matchedLoc.title_ko,
+          title_en: matchedLoc.title_en,
+          category: matchedLoc.category,
+          description: matchedLoc.description || '',
+          address: matchedLoc.address || '',
+          directions: matchedLoc.directions || '',
+          official_url: matchedLoc.official_url || ''
+        } : null,
         systemPrompt: systemPrompt,
-        messages: globalChatHistory.slice(-8)
+        messages: globalChatHistory.slice(-10)
       })
     });
 
-    let reply = '';
     if(resp.ok){
       const data = await resp.json();
-      reply = (data && (data.reply || data.message || data.text)) || '';
+      reply = extractReplyFromResponse(data);
     }
-    if(!reply){
-      reply = '춘천에서는 남이섬, 애니메이션박물관, 레고랜드, 소양강스카이워크처럼 아이들이 좋아할 만한 장소가 많아요 😊<br>원하는 분위기나 나이를 알려주면 더 딱 맞는 코스로 추천해줄게!';
-    }
-
-    removeGlobalTyping();
-    const bubble = appendGlobalChatMsg('bot', '', true);
-    globalChatHistory.push({ role:'assistant', content: reply });
-    runGlobalTypewriter(bubble, String(reply).replace(/\n/g, '<br>'), function(){
-      const log = document.getElementById('global-chat-messages');
-      if(log) log.scrollTop = log.scrollHeight;
-    });
   }catch(err){
-    removeGlobalTyping();
-    appendGlobalChatMsg('bot', '잠깐 연결이 불안정했어요 😥<br>다시 한 번 질문해주면 춘천쌤이 바로 도와줄게!', true);
+    console.error('global chat error:', err);
   }
+
+  if(isBadGlobalReply(reply)){
+    reply = buildEmergencyReply(userMsg, matchedLoc);
+  }
+
+  removeGlobalTyping();
+
+  const safeReply = String(reply || '')
+    .replace(/\n/g, '<br>')
+    .trim();
+
+  const bubble = appendGlobalChatMsg('bot', '', true);
+  globalChatHistory.push({ role:'assistant', content: safeReply });
+
+  runGlobalTypewriter(bubble, safeReply, function(){
+    const log = document.getElementById('global-chat-messages');
+    if(log) log.scrollTop = log.scrollHeight;
+  });
 }
 
 document.addEventListener('click', function(e){
@@ -8997,6 +9191,8 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+
+/* ===== 전역 춘천쌤 챗봇 - 통교체 끝 ===== */
 </script>
 
 <script>
