@@ -347,7 +347,7 @@ canvas.pixel-sprite{image-rendering:pixelated;display:block;background:transpare
 .completion-next-text{font-size:12px;line-height:1.7;color:#214458;font-family:var(--ko)}
 .completion-public-note{margin-top:10px;font-size:11px;color:#6b7280;line-height:1.6;font-family:var(--ko)}
 .completion-sign{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-top:12px;padding-top:10px;border-top:2px solid rgba(26,26,46,.15)}
-.completion-sign .label{font-size:10px;color:#6e6e6e;margin-bottom:2px}
+.completion-sign .label{font-size:8px;color:#6e6e6e;margin-bottom:2px}
 .completion-sign .value{font-size:12px;font-family:var(--ko);color:#1a1a2e}
 .completion-actions {
   display: flex;
@@ -1471,7 +1471,6 @@ body{
 @media (max-width:700px){
   .mobile-search-box{
     display:block;
-    margin-bottom:10px;
     padding:10px;
     background:rgba(255,255,255,.05);
     border:2px solid rgba(255,255,255,.08);
@@ -1744,7 +1743,7 @@ body{
   }
   .mobile-menu-head{
     position:relative !important;
-    min-height:44px !important;
+    min-height:30px !important;
     padding-right:52px !important;
   }
   .mobile-menu-head .mobile-menu-close,
@@ -2359,6 +2358,34 @@ body{
   line-height:1.45;
   text-align:center;
   color:#d7f4ff;
+}
+
+
+/* v102 certificate full-screen dim + saved completion date */
+.completion-overlay{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  min-height:100dvh !important;
+  background:rgba(0,0,0,.78) !important;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  z-index:1000020 !important;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  padding:max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)) !important;
+  box-sizing:border-box;
+  margin:0 !important;
+}
+.completion-overlay.hidden{opacity:0;pointer-events:none;}
+.completion-box{position:relative;z-index:1;}
+@media (max-width:700px){
+  .completion-overlay{
+    align-items:flex-start !important;
+    padding:calc(max(8px, env(safe-area-inset-top)) + 6px) 10px max(10px, env(safe-area-inset-bottom)) !important;
+  }
 }
 
 </style>
@@ -3509,8 +3536,7 @@ img, canvas {
 <style id="custom-final-fixes">
 /* final fixes */
 #mobile-menu-player-banner{
-  margin:8px 0 12px;
-  padding:12px 14px;
+  padding:10px 14px;
   border-radius:16px;
   background:rgba(255,255,255,.12);
   border:1px solid rgba(255,255,255,.14);
@@ -3555,7 +3581,7 @@ img, canvas {
 
   <div class="mobile-menu-actions">
     <button class="px-btn sm" type="button" onclick="mobileGoHome()">홈화면</button>
-    <button class="px-btn sm cherry" type="button" onclick="mobileResetJourney()">리셋하기</button>
+    <button class="px-btn sm cherry" type="button" onclick="mobileResetJourney()">다시 하기</button>
     <button class="px-btn sm teal" type="button" id="mobile-cert-btn" onclick="mobileDownloadCertificate()" style="display:none;">인증서저장</button>
   </div>
 
@@ -3566,7 +3592,7 @@ img, canvas {
 
   
   <div class="mobile-menu-maptools">
-    <div class="mobile-menu-section-title">지도 메뉴</div>
+    <div class="mobile-menu-section-title"></div>
     <div class="mobile-filter-grid" id="mobile-filter-grid">
       <button class="mobile-filter-chip active" type="button" data-filter="all" onclick="mobileSetFilter('all')">전체</button>
       <button class="mobile-filter-chip" type="button" data-filter="명소" onclick="mobileSetFilter('명소')">명소</button>
@@ -3578,7 +3604,7 @@ img, canvas {
     <button class="px-btn sm teal mobile-course-btn" type="button" onclick="openCoursePanelFromMenu()">🗺 춘천관광 추천코스</button>
     <button class="px-btn sm aiai mobile-course-btn" type="button" onclick="openGlobalChatFromMenu()">🤖 춘천쌤한테 질문하기</button>
   </div>
-  <div class="mobile-menu-note">🤖 궁금한내용은 춘천쌤에게 질문해보세요 !<br/>💯 모든 관광지를 확인하면 상장을 받을 수 있어요 !</div>
+  <div class="mobile-menu-note">🤖 궁금한내용은 춘천쌤에게 질문해보세요 !<br/>💯 모든 관광지 확인 후 인증서를 받아봐요 !</div>
   <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="메뉴 닫기" onclick="toggleMobileMenu(false); return false;">X 닫기</button>
 </div>
 
@@ -3666,7 +3692,7 @@ img, canvas {
     <div class="hud-progress" aria-label="탐험 진행도"><span class="hud-progress-fill" id="hud-progress-fill"></span><span class="hud-progress-text" id="hud-progress-text">0%</span></div>
     <div class="hud-quest" id="hud-quest" onclick="openCurrentQuestPanel()">퀘스트: 남이섬으로 이동해 첫 여행을 시작해보세요.</div>
     <button class="px-btn sm" id="hud-cert-btn" onclick="downloadCompletionCertificate()" style="display:none;">📸 CERT</button>
-    <button class="px-btn sm cherry" onclick="resetVisited()">다시 하기 다시</button>
+    <button class="px-btn sm cherry" onclick="resetVisited()">다시 하기</button>
     <button class="px-btn sm" onclick="goToTitle()">처음 화면</button>
   </div>
   
@@ -4261,7 +4287,7 @@ const LOCATIONS = [
   { id:2, slug:'soyanggang-skywalk', title_ko:'소양강스카이워크', title_en:'Soyanggang Skywalk', category:'명소', description:'소양강 위를 걷는 듯한 느낌을 주는 유리 바닥 전망 시설로, 춘천 시내 대표 포토스팟입니다.', address:'강원특별자치도 춘천시 영서로 2663', directions:'도심권 관광지와 함께 둘러보기 좋아요.', official_url:'https://tour.chuncheon.go.kr', image_url:'images/chuncheon/soyanggang-skywalk.png', marker_x:51, marker_y:46 },
   { id:3, slug:'animation-museum', title_ko:'춘천 애니메이션박물관', title_en:'Animation Museum', category:'박물관', description:'애니메이션의 역사와 제작 과정을 전시로 만나볼 수 있는 체험형 박물관입니다.', address:'강원특별자치도 춘천시 서면 박사로 854', directions:'가족 단위 방문객에게 적합한 실내 관광지예요.', official_url:'https://www.animationmuseum.com', image_url:'images/chuncheon/animation-museum.png', marker_x:39, marker_y:38 },
   { id:4, slug:'myeongdong-dakgalbi-street', title_ko:'춘천 명동 닭갈비거리', title_en:'Chuncheon Myeongdong Dakgalbi Street', category:'명소', description:'춘천의 대표 먹거리인 닭갈비를 중심으로 형성된 거리로, 여행객이 많이 찾는 도심 관광 포인트입니다.', address:'강원특별자치도 춘천시 조양동 52', directions:'도심 산책 코스와 함께 가볍게 들르기 좋아요.', official_url:'https://www.chuncheon.go.kr/tour', image_url:'images/chuncheon/dakgalbi-street.png', marker_x:52, marker_y:54  },
-  { id:5, slug:'gimyujeong-railbike', title_ko:'강촌레일파크 김유정레일바이크', title_en:'Gangchon Rail Park (Gimyujeong Railbike)', category:'체험', description:'옛 철길을 따라 달리며 풍경을 즐길 수 있는 춘천 대표 체험 관광지입니다.', address:'강원특별자치도 춘천시 신동면 김유정로 1383', directions:'김유정문학촌과 함께 이동하면 동선이 좋아요.', official_url:'https://www.railpark.co.kr', image_url:'images/chuncheon/gimyujeong-railbike.png',  marker_x:59, marker_y:87},
+  { id:5, slug:'gimyujeong-railbike', title_ko:'강촌레일파크 김유정레일바이크', title_en:'Gangchon Rail Park (Gimyujeong Railbike)', category:'체험', description:'옛 철길을 따라 달리며 풍경을 즐길 수 있는 춘천 대표 체험 관광지입니다.', address:'강원특별자치도 춘천시 신동면 김유정로 1383', directions:'김유정문학촌과 함께 이동하면 동선이 좋아요.', official_url:'https://www.railpark.co.kr', image_url:'images/chuncheon/gimyujeong-railbike.png',  marker_x:55, marker_y:88},
   { id:6, slug:'uiamho-skywalk', title_ko:'의암호스카이워크', title_en:'Uiamho Lake Skywalk', category:'명소', description:'의암호를 배경으로 시원한 수변 풍경을 감상할 수 있는 스카이워크입니다.', address:'강원특별자치도 춘천시 칠전동 485', directions:'의암호 조망 포인트로 사진 찍기 좋아요.', official_url:'http://tour.chuncheon.go.kr/', image_url:'images/chuncheon/uiamho-skywalk.png', marker_x:38, marker_y:65},
   { id:7, slug:'gangwon-provincial-arboretum', title_ko:'강원도립화목원', title_en:'Gangwon Provincial Arboretum', category:'명소', description:'다양한 수목과 산책 공간을 갖춘 자연 친화형 관광지입니다.', address:'강원특별자치도 춘천시 화목원길 24', directions:'소양강댐·화목원 코스로 묶기 좋아요.', official_url:'https://www.gwpa.kr', image_url:'images/chuncheon/gangwon-arboretum.png', marker_x:52, marker_y:33 },
   { id:8, slug:'gugok-falls', title_ko:'구곡폭포', title_en:'Gugok Falls', category:'명소', description:'강촌권 대표 자연 관광지로, 산길과 함께 폭포 경관을 감상할 수 있습니다.', address:'강원특별자치도 춘천시 남산면 강촌구곡길 254', directions:'강촌권 아래쪽 자연 코스로 함께 이동해보세요.', official_url:'https://english.visitkorea.or.kr', image_url:'images/chuncheon/gugok-falls.png', marker_x:24, marker_y:85 },
@@ -4270,7 +4296,7 @@ const LOCATIONS = [
   { id:11, slug:'samaksan-lake-cable-car', title_ko:'춘천 삼악산 호수케이블카', title_en:'Chuncheon Samaksan Mountain Lake Cable Car', category:'명소', description:'호수와 산의 풍경을 함께 조망할 수 있는 춘천 대표 전망 관광지입니다.', address:'강원특별자치도 춘천시 스포츠타운길 245', directions:'의암호 서남권 전망 코스로 들르기 좋아요.', official_url:'https://www.samaksancablecar.com', image_url:'images/chuncheon/samaksan-cablecar.png',  marker_x:37, marker_y:57 },
   { id:12,  slug: 'leesangwon-art-museum',  title_ko: '이상원미술관',  title_en: 'Lee Sangwon Art Museum',  category: '박물관',  description: '자연 속에서 현대 미술 작품을 감상할 수 있는 미술관입니다.',  address: '강원특별자치도 춘천시 사북면 화악지암길 99',  directions: '춘천 외곽 산속에 위치한 조용한 힐링 공간이에요.',  official_url: 'https://www.lswmuseum.com',  image_url: 'images/chuncheon/leesangwon-art-museum.png',  marker_x: 16,  marker_y: 17},
   { id:13, slug:'soyang-dam', title_ko:'소양강댐', title_en:'Soyang Dam', category:'명소', description:'춘천을 대표하는 대형 댐과 호수 경관을 함께 볼 수 있는 상징적인 관광지입니다.', address:'강원특별자치도 춘천시 신북읍 신샘밭로 1128', directions:'소양호 북쪽 관광 루트의 대표 포인트예요.', official_url:'https://english.visitkorea.or.kr', image_url:'images/chuncheon/soyang-dam.png', marker_x:72, marker_y:24 },
-  { id:14, slug:'cheongpyeongsa-temple', title_ko:'청평사', title_en:'Cheongpyeongsa Temple', category:'역사', description:'오랜 역사와 산사 분위기를 간직한 사찰로, 춘천의 전통 문화 자원을 보여주는 장소입니다.', address:'강원특별자치도 춘천시 북산면 오봉산길 810', directions:'소양호 동북권의 역사 테마 코스로 추천해요.', official_url:'https://cheongpyeongsa.co.kr', image_url:'images/chuncheon/cheongpyeongsa.png', marker_x:73, marker_y:13 },
+  { id:14, slug:'cheongpyeongsa-temple', title_ko:'청평사', title_en:'Cheongpyeongsa Temple', category:'역사', description:'오랜 역사와 산사 분위기를 간직한 사찰로, 춘천의 전통 문화 자원을 보여주는 장소입니다.', address:'강원특별자치도 춘천시 북산면 오봉산길 810', directions:'소양호 동북권의 역사 테마 코스로 추천해요.', official_url:'https://cheongpyeongsa.co.kr', image_url:'images/chuncheon/cheongpyeongsa.png', marker_x:75, marker_y:16 },
   { id:15, slug:'gongjicheon-recreation-area', title_ko:'공지천유원지', title_en:'Gongjicheon Recreation Area', category:'명소', description:'산책과 휴식을 즐기기 좋은 도심 수변 공간으로, 춘천 시민과 여행객 모두에게 익숙한 장소입니다.', address:'강원특별자치도 춘천시 이디오피아길 25', directions:'도심형 산책 코스 또는 야경 포인트로 활용 가능해요.', official_url:'https://english.visitkorea.or.kr', image_url:'images/chuncheon/gongjicheon.png',  marker_x:43, marker_y:55  },
   { id:16, slug:'chuncheon-makguksu-museum', title_ko:'춘천막국수체험박물관', title_en:'Chuncheon Makguksu Museum', category:'체험', description:'춘천의 대표 음식 문화인 막국수를 테마로 전시와 체험을 제공하는 공간입니다.', address:'강원특별자치도 춘천시 신북읍 신북로 264', directions:'북쪽 먹거리·체험 코스로 함께 둘러보세요.', official_url:'https://ccmksmuseum.modoo.at', image_url:'images/chuncheon/makguksu-museum.png', marker_x:60, marker_y:26 },
   { id:17, slug:'chuncheon-puppet-theater-museum', title_ko:'춘천인형극장 & 인형극박물관', title_en:'Chuncheon Puppet Theater & Puppet Museum', category:'박물관', description:'춘천의 인형극 문화를 소개하는 공연·전시 복합 공간입니다.', address:'강원특자치도 춘천시 영서로 3017', directions:'서면권 박물관 코스와 잘 어울려요.', official_url:'https://www.cocobau.com', image_url:'images/chuncheon/puppet-theater.png', marker_x:47, marker_y:33 },
@@ -6999,6 +7025,7 @@ const LOCATION_ROUTE_HINTS = {
 let visitedIds = new Set(JSON.parse(safeGetItem('gochuncheon_visited') || '[]'));
 let moving = false;
 let completionShown = false;
+const COMPLETION_DATE_KEY = 'gochuncheon_completion_date';
 let quizStats = JSON.parse(safeGetItem('gochuncheon_quiz_stats') || '{"answered":0,"correct":0}');
 if(typeof quizStats !== 'object' || quizStats === null) quizStats = { answered:0, correct:0 };
 quizStats.answered = Number(quizStats.answered || 0);
@@ -7510,6 +7537,7 @@ function updateCompletionSummary(){
   if(menuName) menuName.textContent = selectedChar?.name || '춘천 탐험가';
   const completionCanvas = document.getElementById('completion-avatar');
   if(completionCanvas && selectedChar?.palette) drawCharacter(completionCanvas, selectedChar.palette, 3);
+  if(completionShown || visitedIds.size >= LOCATIONS.length) updateCompletionDate(false);
 }
 
 function playCompletionFanfare(){
@@ -7545,6 +7573,7 @@ function maybeShowCompletion(){
   if(visitedIds.size < LOCATIONS.length) return;
   completionShown = true;
   updateCompletionSummary();
+  updateCompletionDate(true);
   const certBtn = document.getElementById('hud-cert-btn');
   if(certBtn) certBtn.style.display = 'inline-block';
   syncMobileCertButton();
@@ -7560,15 +7589,24 @@ function closeCompletion(e){
   document.getElementById('completion-overlay').classList.add('hidden');
 }
 
-function updateCompletionDate(){
-  updateCompletionSummary();
+function formatCompletionDate(dateInput){
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput || Date.now());
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,'0');
+  const d = String(date.getDate()).padStart(2,'0');
+  return `${y}.${m}.${d}`;
+}
+
+function updateCompletionDate(forceNew){
   const el = document.getElementById('completion-date');
-  if(!el) return;
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth()+1).padStart(2,'0');
-  const d = String(now.getDate()).padStart(2,'0');
-  el.textContent = `${y}.${m}.${d}`;
+  if(!el) return '';
+  let stored = safeGetItem(COMPLETION_DATE_KEY);
+  if(forceNew || !stored){
+    stored = formatCompletionDate(new Date());
+    safeSetItem(COMPLETION_DATE_KEY, stored);
+  }
+  el.textContent = stored;
+  return stored;
 }
 
 async function shareCompletionResult(){
@@ -7742,6 +7780,7 @@ function resetVisited(){
   quizStats = { answered:0, correct:0 };
   saveQuizStats();
   completionShown = false;
+  safeRemoveItem(COMPLETION_DATE_KEY);
   questStep = 0; saveQuest();
   document.querySelectorAll('.poi-wrap.is-active').forEach(el=>el.classList.remove('is-active'));
   document.querySelectorAll('.poi-wrap.visited').forEach(el=>el.classList.remove('visited'));
@@ -7901,6 +7940,7 @@ window.addEventListener('load', function(){ try{ initCharSelect(); }catch(e){ co
 if(visitedIds.size >= LOCATIONS.length){
   completionShown = true;
   updateCompletionSummary();
+  updateCompletionDate(false);
   const certBtn = document.getElementById('hud-cert-btn');
   if(certBtn) certBtn.style.display = 'inline-block';
   syncMobileCertButton();
@@ -10505,6 +10545,136 @@ document.addEventListener('DOMContentLoaded', function(){
         e.preventDefault();
         return closeMenu();
       };
+    }
+  });
+})();
+</script>
+
+
+<style id="certificate-final-fixes">
+#completion-overlay{
+  background:rgba(6,10,18,.82) !important;
+  z-index:1003000 !important;
+}
+#completion-certificate,
+#completion-overlay .completion-box{
+  position:relative;
+  z-index:1003001 !important;
+}
+#game-bottom-nav,
+.game-bottom-nav,
+#floating-game-menu-btn,
+.mobile-menu-panel,
+.mobile-menu-backdrop{
+  z-index:auto;
+}
+body.completion-open #game-bottom-nav,
+body.completion-open .game-bottom-nav,
+body.completion-open #floating-game-menu-btn,
+body.completion-open .mobile-menu-panel,
+body.completion-open .mobile-menu-backdrop{
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+@media (max-width:700px){
+  #completion-overlay{
+    align-items:flex-start !important;
+    padding:calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 10px) !important;
+    overflow-y:auto !important;
+  }
+  #completion-certificate,
+  #completion-overlay .completion-box{
+    margin-top:8px !important;
+  }
+}
+</style>
+<script id="certificate-final-script">
+(function(){
+  const STORAGE_KEY = 'gochuncheon_character_profile_v2';
+
+  function getStoredProfile(){
+    try{
+      const raw = (typeof safeGetItem === 'function') ? safeGetItem(STORAGE_KEY) : localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : null;
+      if(typeof sanitizeCharacterProfile === 'function') return sanitizeCharacterProfile(parsed || window.selectedChar || {});
+      return parsed || window.selectedChar || {};
+    }catch(e){
+      try{
+        if(typeof sanitizeCharacterProfile === 'function') return sanitizeCharacterProfile(window.selectedChar || {});
+      }catch(err){}
+      return window.selectedChar || {};
+    }
+  }
+
+  function syncCertificateProfile(){
+    const profile = getStoredProfile() || {};
+    const name = String(profile.name || profile.nameKo || '춘천 탐험가').trim() || '춘천 탐험가';
+    const nameplate = document.getElementById('completion-nameplate');
+    const explorerName = document.getElementById('completion-explorer-name');
+    const menuName = document.getElementById('mobile-menu-player-name');
+    if(nameplate) nameplate.textContent = name + '님';
+    if(explorerName) explorerName.textContent = name;
+    if(menuName) menuName.textContent = name;
+    const canvas = document.getElementById('completion-avatar');
+    if(canvas && profile.palette && typeof drawCharacter === 'function'){
+      try{ drawCharacter(canvas, profile.palette, 3); }catch(e){}
+    }
+    window.selectedChar = profile;
+  }
+
+  function setCompletionOpenState(isOpen){
+    document.body.classList.toggle('completion-open', !!isOpen);
+  }
+
+  const originalUpdate = window.updateCompletionSummary;
+  window.updateCompletionSummary = function(){
+    if(typeof originalUpdate === 'function'){
+      try{ originalUpdate.apply(this, arguments); }catch(e){ console.error(e); }
+    }
+    syncCertificateProfile();
+  };
+
+  const originalMaybeShow = window.maybeShowCompletion;
+  window.maybeShowCompletion = function(){
+    syncCertificateProfile();
+    const result = (typeof originalMaybeShow === 'function') ? originalMaybeShow.apply(this, arguments) : undefined;
+    setTimeout(function(){
+      const overlay = document.getElementById('completion-overlay');
+      if(overlay && !overlay.classList.contains('hidden')){
+        syncCertificateProfile();
+        setCompletionOpenState(true);
+      }
+    }, 30);
+    return result;
+  };
+
+  const originalClose = window.closeCompletion;
+  window.closeCompletion = function(e){
+    const result = (typeof originalClose === 'function') ? originalClose.apply(this, arguments) : undefined;
+    const overlay = document.getElementById('completion-overlay');
+    if(overlay && overlay.classList.contains('hidden')) setCompletionOpenState(false);
+    return result;
+  };
+
+  const originalDownload = window.downloadCompletionCertificate;
+  if(typeof originalDownload === 'function'){
+    window.downloadCompletionCertificate = async function(){
+      syncCertificateProfile();
+      setCompletionOpenState(true);
+      return await originalDownload.apply(this, arguments);
+    };
+  }
+
+  window.addEventListener('load', function(){
+    syncCertificateProfile();
+    const overlay = document.getElementById('completion-overlay');
+    if(overlay){
+      const observer = new MutationObserver(function(){
+        const isOpen = !overlay.classList.contains('hidden');
+        setCompletionOpenState(isOpen);
+        if(isOpen) syncCertificateProfile();
+      });
+      observer.observe(overlay, { attributes:true, attributeFilter:['class'] });
     }
   });
 })();
