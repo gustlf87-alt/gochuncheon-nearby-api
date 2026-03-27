@@ -10680,6 +10680,145 @@ body.completion-open .mobile-menu-backdrop{
 })();
 </script>
 
+
+<!--apk 뒤로버튼 0327 -->
+<script>
+(function () {
+  let lastBackAt = 0;
+
+  function isVisibleOverlay(id) {
+    const el = document.getElementById(id);
+    return el && !el.classList.contains('hidden');
+  }
+
+  function isMapScreenVisible() {
+    const el = document.getElementById('screen-map');
+    return el && !el.classList.contains('hidden');
+  }
+
+  function isTitleScreenVisible() {
+    const el = document.getElementById('screen-title');
+    return el && !el.classList.contains('hidden');
+  }
+
+  function closeTopLayer() {
+    // 1) 모바일 메뉴
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu && mobileMenu.classList.contains('open')) {
+      toggleMobileMenu(false);
+      return true;
+    }
+
+    // 2) 전역 챗봇
+    if (isVisibleOverlay('global-chat-overlay')) {
+      closeGlobalChatOverlay();
+      return true;
+    }
+
+    // 3) 추천 결과
+    if (isVisibleOverlay('recommend-overlay')) {
+      closeRecommendOverlay();
+      return true;
+    }
+
+    // 4) 프로필 추천 설문
+    if (isVisibleOverlay('profile-overlay')) {
+      closeProfileOverlay();
+      return true;
+    }
+
+    // 5) 인증서
+    if (isVisibleOverlay('completion-overlay')) {
+      closeCompletion();
+      return true;
+    }
+
+    // 6) 여행코스
+    if (isVisibleOverlay('course-overlay')) {
+      closeCoursePanel();
+      return true;
+    }
+
+    // 7) 퀘스트
+    if (isVisibleOverlay('quest-overlay')) {
+      closeQuestPanel();
+      return true;
+    }
+
+    // 8) 관광지 상세 모달
+    if (isVisibleOverlay('modal-overlay')) {
+      closeModal();
+      return true;
+    }
+
+    return false;
+  }
+
+  function handleBackButton() {
+    // 열린 레이어가 있으면 먼저 닫기
+    if (closeTopLayer()) return;
+
+    // 맵 화면이면 타이틀로 이동
+    if (isMapScreenVisible()) {
+      goToTitle();
+      return;
+    }
+
+    // 캐릭터 선택 화면이면 타이틀로 이동
+    const charScreen = document.getElementById('screen-character');
+    if (charScreen && !charScreen.classList.contains('hidden')) {
+      goToTitle();
+      return;
+    }
+
+    // 타이틀 화면이면 두 번 눌러 종료
+    if (isTitleScreenVisible()) {
+      const now = Date.now();
+      if (now - lastBackAt < 1500) {
+        if (window.Capacitor?.Plugins?.App?.exitApp) {
+          window.Capacitor.Plugins.App.exitApp();
+        }
+      } else {
+        lastBackAt = now;
+        if (typeof showToast === 'function') {
+          showToast('한 번 더 누르면 앱이 종료돼요');
+        } else {
+          const toast = document.getElementById('toast');
+          if (toast) {
+            toast.textContent = '한 번 더 누르면 앱이 종료돼요';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1200);
+          }
+        }
+      }
+      return;
+    }
+
+    // 혹시 히스토리 있으면 뒤로
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    // 마지막 fallback
+    if (window.Capacitor?.Plugins?.App?.exitApp) {
+      window.Capacitor.Plugins.App.exitApp();
+    }
+  }
+
+  function bindAndroidBackButton() {
+    const appPlugin = window.Capacitor?.Plugins?.App;
+    if (!appPlugin || !appPlugin.addListener) return;
+
+    appPlugin.addListener('backButton', () => {
+      handleBackButton();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', bindAndroidBackButton);
+})();
+</script>
+
 </body>
 
 </html>
