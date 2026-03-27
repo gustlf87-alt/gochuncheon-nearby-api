@@ -9,6 +9,7 @@
 
 <audio id="sound-correct" src="/sounds/correct.mp3"></audio>
 <audio id="sound-wrong" src="/sounds/wrong.mp3"></audio>
+<audio id="bgm-audio" src="/sounds/bg-sound.mp3" loop></audio>
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -10248,6 +10249,17 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function customStartJourney(){
     const state = ensureState();
+	  // 🎵 BGM 시작
+	  try {
+		const bgm = document.getElementById('bgm-audio');
+		if (bgm && bgm.paused) {
+		  bgm.currentTime = 0;
+		  bgm.play();
+		}
+	  } catch (e) {
+		console.log('bgm error', e);
+	  }
+
     const input = document.getElementById('player-name-input');
     const name = (input ? input.value : state.name || '').trim();
     if(!name){
